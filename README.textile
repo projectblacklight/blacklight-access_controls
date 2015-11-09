@@ -1,0 +1,6 @@
+h1. Blacklight Access Controls
+
+Provides access controls for Blacklight-based applications.
+
+*Background*:  Much of this code was extracted from [hydra-access-controls](https://github.com/projecthydra/hydra-head/tree/master/hydra-access-controls).
+
