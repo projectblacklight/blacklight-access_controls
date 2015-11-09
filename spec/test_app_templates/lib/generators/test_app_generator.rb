@@ -7,7 +7,13 @@ class TestAppGenerator < Rails::Generators::Base
   # into the test app, this generator will be run immediately
   # after setting up the application
 
-  def install_engine
-#    generate 'blacklight-access-controls:install'
+  def generate_blacklight
+    say_status('warning', 'GENERATING BLACKLIGHT', :yellow)
+    generate "blacklight:install", "--devise"
   end
+
+#  def install_engine
+#    generate 'blacklight-access-controls:install'
+#  end
+
 end

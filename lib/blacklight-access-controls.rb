@@ -1,1 +1,2 @@
-puts "hello"
+require 'rails'
+require 'blacklight'
