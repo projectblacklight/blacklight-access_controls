@@ -1,13 +1,13 @@
 version = File.read(File.expand_path("../VERSION", __FILE__)).strip
 
 Gem::Specification.new do |gem|
-  gem.name          = "blacklight-access-controls"
+  gem.name          = "blacklight-access_controls"
 
   gem.description   = %q{Access controls for project blacklight}
   gem.summary       = %q{Access controls for project blacklight}
   gem.homepage      = "http://http://projectblacklight.org"
   gem.email         = ["blacklight-development@googlegroups.com"]
-  gem.authors       = ["Chris Beer", "Justin Coyne", "Matt Zumwalt"]
+  gem.authors       = ["Chris Beer", "Justin Coyne", "Matt Zumwalt", "Valerie Maher"]
 
   gem.files         = `git ls-files`.split($\)
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})

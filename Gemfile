@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-# Specify gem dependencies in blacklight-access-controls.gemspec
+# Specify gem dependencies in blacklight-access_controls.gemspec
 gemspec
 
 # -------------------------

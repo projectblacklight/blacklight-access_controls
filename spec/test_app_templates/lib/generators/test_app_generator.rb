@@ -13,7 +13,7 @@ class TestAppGenerator < Rails::Generators::Base
   end
 
 #  def install_engine
-#    generate 'blacklight-access-controls:install'
+#    generate 'blacklight-access_controls:install'
 #  end
 
   def add_cancan_ability
