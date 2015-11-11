@@ -15,13 +15,24 @@ module Blacklight
         self.ability_logic = [:discover_permissions, :read_permissions]
       end
 
-      def initialize(user, options = {})
-#        @current_user = user || Hydra::Ability.user_class.new # guest user (not logged in)
-#        @options = options
-        grant_default_permissions
+      def initialize(user, options={})
+        @current_user = user || guest_user
+        @options = options
+        grant_permissions
       end
 
-      def grant_default_permissions
+      attr_reader :current_user, :options
+
+      def self.user_class
+        Blacklight::AccessControls.config.user_model.constantize
+      end
+
+      # A user who isn't logged in
+      def guest_user
+        Blacklight::AccessControls::Ability.user_class.new
+      end
+
+      def grant_permissions
 # TODO: move this debug statement to a better place?
 #        Rails.logger.debug("Usergroups are " + user_groups.inspect)
         self.ability_logic.each do |method|
@@ -55,11 +66,33 @@ module Blacklight
       # TODO: implement this method
       def test_discover(id)
         true
+
+#      Rails.logger.debug("[CANCAN] Checking discover permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
+
+#        group_intersection = user_groups & discover_groups(id)
+#        !group_intersection.empty? || discover_users(id).include?(current_user.user_key)
+
+#        has_group_permission(id)? || has_user_permission(id)?
       end
 
       # TODO: implement this method
       def test_read(id)
         true
+      end
+
+      # You can override this method if you are using a different AuthZ (such as LDAP)
+      def user_groups
+        return @user_groups if @user_groups
+
+        @user_groups = default_user_groups
+        @user_groups |= current_user.groups if current_user.respond_to? :groups
+        @user_groups |= ['registered'] unless current_user.new_record?
+        @user_groups
+      end
+
+      # Everyone is automatically a member of group 'public'
+      def default_user_groups
+        ['public']
       end
 
     end
