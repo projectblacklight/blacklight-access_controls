@@ -13,7 +13,7 @@ describe Ability do
       subject { ability }
 
       it { should     be_able_to(:discover, asset) }
-#      it { should_not be_able_to(:read, asset) }
+      it { should_not be_able_to(:read, asset) }
     end
 
     context "Then a registered user" do
@@ -21,7 +21,7 @@ describe Ability do
       subject { ability }
 
       it { should     be_able_to(:discover, asset) }
-#      it { should_not be_able_to(:read, asset) }
+      it { should_not be_able_to(:read, asset) }
     end
   end
 

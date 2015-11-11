@@ -67,18 +67,20 @@ module Blacklight
 
       # TODO: implement this method
       def test_discover(id)
-#      Rails.logger.debug("[CANCAN] Checking discover permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
+        #Rails.logger.debug("[CANCAN] Checking discover permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
 
         group_intersection = user_groups & discover_groups(id)
         !group_intersection.empty?
-
-#        !group_intersection.empty? || discover_users(id).include?(current_user.user_key)
-#        has_group_permission(id)? || has_user_permission(id)?
+        # TODO: copy over the rest of this method
       end
 
       # TODO: implement this method
       def test_read(id)
-        true
+        #Rails.logger.debug("[CANCAN] Checking read permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
+
+        group_intersection = user_groups & read_groups(id)
+        !group_intersection.empty?
+        # TODO: copy over the rest of this method
       end
 
       # You can override this method if you are using a different AuthZ (such as LDAP)
@@ -105,15 +107,23 @@ module Blacklight
         dg
       end
 
-      # TODO: implement this method
       def read_groups(id)
-        []
+        doc = permissions_doc(id)
+        return [] if doc.nil?
+        rg = Array(doc[self.class.read_group_field])
+        Rails.logger.debug("[CANCAN] read_groups: #{rg.inspect}")
+        rg
       end
 
       module ClassMethods
+        #TODO: Instead of hard-coding these field keys, get them from the Config class
+
         def discover_group_field
           "discover_access_group_ssim"
-          #TODO: Instead of hard-coding, get this from Config
+        end
+
+        def read_group_field
+          "read_access_group_ssim"
         end
       end
     end
