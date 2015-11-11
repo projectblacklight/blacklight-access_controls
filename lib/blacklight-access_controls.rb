@@ -4,6 +4,8 @@ require 'blacklight'
 require 'blacklight/access_controls'
 
 module Blacklight::AccessControls
+  extend ActiveSupport::Autoload
+
   class << self
     def configure
       @config ||= Config.new
@@ -12,4 +14,9 @@ module Blacklight::AccessControls
     end
     alias :config :configure
   end
+
+  autoload :Config
+  autoload :PermissionsQuery
+  autoload :PermissionsCache
+  autoload :PermissionsSolrDocument
 end

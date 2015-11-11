@@ -4,19 +4,25 @@ require 'cancan/matchers'
 describe Ability do
   let(:ability) { Ability.new(user) }
 
-  let(:public_record) { SolrDocument.new(id: 'pub_rec') }
-  let(:private_record) { SolrDocument.new(id: 'pri_rec') }
+  describe "Given an asset that has been made publicly discoverable" do
+    let(:asset) { create_solr_doc(id: 'public_discovery',
+                  discover_access_group_ssim: 'public') }
 
-  context 'not logged in' do
-    subject { ability }
-    let(:user) { nil }
+    context "Then a not-signed-in user" do
+      let(:user) { nil }
+      subject { ability }
 
-    it {
-      is_expected.to     be_able_to(:discover, public_record)
-      is_expected.to     be_able_to(:read, public_record)
-      is_expected.to_not be_able_to(:discover, private_record)
-#      is_expected.to_not be_able_to(:read, private_record)
-    }
+      it { should     be_able_to(:discover, asset) }
+#      it { should_not be_able_to(:read, asset) }
+    end
+
+    context "Then a registered user" do
+      let(:user) { create(:user) }
+      subject { ability }
+
+      it { should     be_able_to(:discover, asset) }
+#      it { should_not be_able_to(:read, asset) }
+    end
   end
 
 

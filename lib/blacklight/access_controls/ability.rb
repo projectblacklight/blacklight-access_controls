@@ -7,6 +7,7 @@ module Blacklight
 
       included do
         include CanCan::Ability
+        include Blacklight::AccessControls::PermissionsQuery
 
         # Once you include this module, you can add custom
         # permission methods to ability_logic, like so:
@@ -18,10 +19,11 @@ module Blacklight
       def initialize(user, options={})
         @current_user = user || guest_user
         @options = options
+        @cache = Blacklight::AccessControls::PermissionsCache.new
         grant_permissions
       end
 
-      attr_reader :current_user, :options
+      attr_reader :current_user, :options, :cache
 
       def self.user_class
         Blacklight::AccessControls.config.user_model.constantize
@@ -65,13 +67,12 @@ module Blacklight
 
       # TODO: implement this method
       def test_discover(id)
-        true
-
 #      Rails.logger.debug("[CANCAN] Checking discover permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
 
-#        group_intersection = user_groups & discover_groups(id)
-#        !group_intersection.empty? || discover_users(id).include?(current_user.user_key)
+        group_intersection = user_groups & discover_groups(id)
+        !group_intersection.empty?
 
+#        !group_intersection.empty? || discover_users(id).include?(current_user.user_key)
 #        has_group_permission(id)? || has_user_permission(id)?
       end
 
@@ -95,6 +96,26 @@ module Blacklight
         ['public']
       end
 
+      # read implies discover, so discover_groups is the union of read and discover groups
+      def discover_groups(id)
+        doc = permissions_doc(id)
+        return [] if doc.nil?
+        dg = read_groups(id) | (doc[self.class.discover_group_field] || [])
+        Rails.logger.debug("[CANCAN] discover_groups: #{dg.inspect}")
+        dg
+      end
+
+      # TODO: implement this method
+      def read_groups(id)
+        []
+      end
+
+      module ClassMethods
+        def discover_group_field
+          "discover_access_group_ssim"
+          #TODO: Instead of hard-coding, get this from Config
+        end
+      end
     end
   end
 end
