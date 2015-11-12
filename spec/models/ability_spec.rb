@@ -148,4 +148,27 @@ describe Ability do
     end
   end
 
+  describe "with a custom method" do
+    let(:user) { create(:user) }
+    subject { MyAbility.new(user) }
+
+    before do
+      class MyAbility
+        include Blacklight::AccessControls::Ability
+        self.ability_logic +=[:setup_my_permissions]
+
+        def setup_my_permissions
+          can :accept, SolrDocument
+        end
+      end
+    end
+
+    after do
+      Object.send(:remove_const, :MyAbility)
+    end
+
+    # Make sure it called the custom method
+    it { should be_able_to(:accept, SolrDocument) }
+  end
+
 end
