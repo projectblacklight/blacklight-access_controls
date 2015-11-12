@@ -65,13 +65,10 @@ module Blacklight
         end
       end
 
-      # TODO: implement this method
       def test_discover(id)
         #Rails.logger.debug("[CANCAN] Checking discover permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
-
         group_intersection = user_groups & discover_groups(id)
-        !group_intersection.empty?
-        # TODO: copy over the rest of this method
+        !group_intersection.empty? || discover_users(id).include?(current_user.user_key)
       end
 
       def test_read(id)
@@ -102,6 +99,15 @@ module Blacklight
         dg = read_groups(id) | (doc[self.class.discover_group_field] || [])
         Rails.logger.debug("[CANCAN] discover_groups: #{dg.inspect}")
         dg
+      end
+
+      # read implies discover, so discover_users is the union of read and discover users
+      def discover_users(id)
+        doc = permissions_doc(id)
+        return [] if doc.nil?
+        dp = read_users(id) | (doc[self.class.discover_user_field] || [])
+        Rails.logger.debug("[CANCAN] discover_users: #{dp.inspect}")
+        dp
       end
 
       def read_groups(id)

@@ -34,7 +34,7 @@ describe Ability do
     end
   end
 
-  describe "Given an asset that has been made publicly available (ie. open access)" do
+  describe "Given an asset that has been made publicly readable" do
     let(:asset) { create_solr_doc(id: 'public_read',
                   read_access_group_ssim: 'public') }
 
@@ -80,7 +80,7 @@ describe Ability do
       let(:user) { user_with_access }
       subject { ability }
 
-#999      it { should be_able_to(:discover, asset) }
+      it { should be_able_to(:discover, asset) }
       it { should be_able_to(:read, asset) }
     end
   end
