@@ -35,8 +35,7 @@ module Blacklight
       end
 
       def grant_permissions
-# TODO: move this debug statement to a better place?
-#        Rails.logger.debug("Usergroups are " + user_groups.inspect)
+        Rails.logger.debug("Usergroups are " + user_groups.inspect)
         self.ability_logic.each do |method|
           send(method)
         end
@@ -68,13 +67,13 @@ module Blacklight
       end
 
       def test_discover(id)
-        #Rails.logger.debug("[CANCAN] Checking discover permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
+        Rails.logger.debug("[CANCAN] Checking discover permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
         group_intersection = user_groups & discover_groups(id)
         !group_intersection.empty? || discover_users(id).include?(current_user.user_key)
       end
 
       def test_read(id)
-        #Rails.logger.debug("[CANCAN] Checking read permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
+        Rails.logger.debug("[CANCAN] Checking read permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
         group_intersection = user_groups & read_groups(id)
         !group_intersection.empty? || read_users(id).include?(current_user.user_key)
       end
