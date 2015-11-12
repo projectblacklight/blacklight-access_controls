@@ -14,11 +14,16 @@ class TestAppGenerator < Rails::Generators::Base
 
   def configure_blacklight
     say_status('status', 'CONFIGURING BLACKLIGHT', :yellow)
+
     remove_file 'config/blacklight.yml'
     copy_file 'blacklight.yml', 'config/blacklight.yml'
+
     insert_into_file 'app/models/user.rb',
       "  include Blacklight::AccessControls::User\n",
       after: "class User < ActiveRecord::Base\n"
+
+    remove_file 'app/controllers/catalog_controller.rb'
+    copy_file 'catalog_controller.rb', 'app/controllers/catalog_controller.rb'
   end
 
 #  def install_engine
