@@ -50,6 +50,7 @@ module Blacklight
 #        end
 
         can :discover, SolrDocument do |obj|
+          cache.put(obj.id, obj)
           test_discover(obj.id)
         end
       end
@@ -61,6 +62,7 @@ module Blacklight
         # end
 
         can :read, SolrDocument do |obj|
+          cache.put(obj.id, obj)
           test_read(obj.id)
         end
       end

@@ -14,8 +14,8 @@ describe Ability do
   end
 
   describe "Given an asset that has been made publicly discoverable" do
-    let(:asset) { create_solr_doc(id: 'public_discovery',
-                  discover_access_group_ssim: 'public') }
+    let(:asset) { SolrDocument.new(id: 'public_discovery',
+                  discover_access_group_ssim: ['public']) }
 
     context "Then a not-signed-in user" do
       let(:user) { nil }
@@ -35,8 +35,8 @@ describe Ability do
   end
 
   describe "Given an asset that has been made publicly readable" do
-    let(:asset) { create_solr_doc(id: 'public_read',
-                  read_access_group_ssim: 'public') }
+    let(:asset) { SolrDocument.new(id: 'public_read',
+                  read_access_group_ssim: ['public']) }
 
     context "Then a not-signed-in user" do
       let(:user) { nil }
@@ -57,7 +57,7 @@ describe Ability do
 
   describe "Given an asset to which a specific user has discovery access" do
     let(:user_with_access) { create(:user) }
-    let(:asset) { create_solr_doc(id: 'user_disco', discover_access_person_ssim: user_with_access.email) }
+    let(:asset) { SolrDocument.new(id: 'user_disco', discover_access_person_ssim: [user_with_access.email]) }
 
     context "Then a not-signed-in user" do
       let(:user) { nil }
@@ -86,7 +86,7 @@ describe Ability do
 
   describe "Given an asset to which a specific user has read access" do
     let(:user_with_access) { create(:user) }
-    let(:asset) { create_solr_doc(id: 'user_read', read_access_person_ssim: user_with_access.email) }
+    let(:asset) { SolrDocument.new(id: 'user_read', read_access_person_ssim: [user_with_access.email]) }
 
     context "Then a not-signed-in user" do
       let(:user) { nil }
