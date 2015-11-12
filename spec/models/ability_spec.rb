@@ -4,6 +4,15 @@ require 'cancan/matchers'
 describe Ability do
   let(:ability) { Ability.new(user) }
 
+  describe "class methods" do
+    it 'has keys for access control fields' do
+      expect(Ability.read_group_field).to eq 'read_access_group_ssim'
+      expect(Ability.read_user_field).to eq 'read_access_person_ssim'
+      expect(Ability.discover_group_field).to eq 'discover_access_group_ssim'
+      expect(Ability.discover_user_field).to eq 'discover_access_person_ssim'
+    end
+  end
+
   describe "Given an asset that has been made publicly discoverable" do
     let(:asset) { SolrDocument.new(id: 'public_discovery',
                   discover_access_group_ssim: 'public') }

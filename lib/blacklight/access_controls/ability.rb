@@ -127,6 +127,10 @@ module Blacklight
           "discover_access_group_ssim"
         end
 
+        def discover_user_field
+          "discover_access_person_ssim"
+        end
+
         def read_group_field
           "read_access_group_ssim"
         end
