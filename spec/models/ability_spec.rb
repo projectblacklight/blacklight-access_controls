@@ -46,6 +46,36 @@ describe Ability do
     end
   end
 
+  describe "Given an asset to which a specific user has read access" do
+    let(:user_with_access) { create(:user) }
+
+    let(:asset) { create_solr_doc(id: 'user_read', read_access_person_ssim: user_with_access.email) }
+
+    context "Then a not-signed-in user" do
+      let(:user) { nil }
+      subject { ability }
+
+      it { should_not be_able_to(:discover, asset) }
+      it { should_not be_able_to(:read, asset) }
+    end
+
+    context "Then a different registered user" do
+      let(:user) { create(:user) }
+      subject { ability }
+
+      it { should_not be_able_to(:discover, asset) }
+      it { should_not be_able_to(:read, asset) }
+    end
+
+    context "Then that user" do
+      let(:user) { user_with_access }
+      subject { ability }
+
+#999      it { should be_able_to(:discover, asset) }
+      it { should be_able_to(:read, asset) }
+    end
+  end
+
 
   describe '.user_class' do
     subject { Blacklight::AccessControls::Ability.user_class }

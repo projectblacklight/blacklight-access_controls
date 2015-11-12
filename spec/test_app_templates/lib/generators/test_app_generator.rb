@@ -12,10 +12,13 @@ class TestAppGenerator < Rails::Generators::Base
     generate "blacklight:install", "--devise"
   end
 
-  def config_blacklight_yaml
+  def configure_blacklight
     say_status('status', 'CONFIGURING BLACKLIGHT', :yellow)
     remove_file 'config/blacklight.yml'
     copy_file 'blacklight.yml', 'config/blacklight.yml'
+    insert_into_file 'app/models/user.rb',
+      "  include Blacklight::AccessControls::User\n",
+      after: "class User < ActiveRecord::Base\n"
   end
 
 #  def install_engine

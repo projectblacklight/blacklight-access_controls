@@ -74,13 +74,10 @@ module Blacklight
         # TODO: copy over the rest of this method
       end
 
-      # TODO: implement this method
       def test_read(id)
         #Rails.logger.debug("[CANCAN] Checking read permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
-
         group_intersection = user_groups & read_groups(id)
-        !group_intersection.empty?
-        # TODO: copy over the rest of this method
+        !group_intersection.empty? || read_users(id).include?(current_user.user_key)
       end
 
       # You can override this method if you are using a different AuthZ (such as LDAP)
@@ -115,6 +112,14 @@ module Blacklight
         rg
       end
 
+      def read_users(id)
+        doc = permissions_doc(id)
+        return [] if doc.nil?
+        rp = Array(doc[self.class.read_user_field])
+        Rails.logger.debug("[CANCAN] read_users: #{rp.inspect}")
+        rp
+      end
+
       module ClassMethods
         #TODO: Instead of hard-coding these field keys, get them from the Config class
 
@@ -125,6 +130,11 @@ module Blacklight
         def read_group_field
           "read_access_group_ssim"
         end
+
+        def read_user_field
+          "read_access_person_ssim"
+        end
+
       end
     end
   end
