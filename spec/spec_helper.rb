@@ -7,12 +7,8 @@ require 'blacklight-access_controls'
 require 'factory_girl_rails'
 require 'database_cleaner'
 
-Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
-
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
-
-  config.include SolrSupport
 
   config.before(:suite) do
     DatabaseCleaner.clean_with :truncation
