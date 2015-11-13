@@ -42,11 +42,9 @@ module Blacklight
       end
 
       def discover_permissions
-# TODO:
-#        # If we only have an ID instead of a SolrDocument
-#        can :discover, String do |id|
-#          test_discover(id)
-#        end
+        can :discover, String do |id|
+          test_discover(id)
+        end
 
         can :discover, SolrDocument do |obj|
           cache.put(obj.id, obj)
@@ -55,10 +53,9 @@ module Blacklight
       end
 
       def read_permissions
-# TODO:
-        # can :read, String do |id|
-        #   test_read(id)
-        # end
+        can :read, String do |id|
+          test_read(id)
+        end
 
         can :read, SolrDocument do |obj|
           cache.put(obj.id, obj)

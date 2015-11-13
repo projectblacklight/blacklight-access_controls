@@ -32,6 +32,20 @@ describe Ability do
       it { should     be_able_to(:discover, asset) }
       it { should_not be_able_to(:read, asset) }
     end
+
+    context 'With an ID instead of a SolrDocument' do
+      let(:user) { create(:user) }
+      subject { ability }
+
+      let(:asset) {
+        create_solr_doc(id: 'public_discovery',
+                        discover_access_group_ssim: ['public'])
+      }
+
+      # It should still work, even if we just pass in an ID
+      it { should     be_able_to(:discover, asset.id) }
+      it { should_not be_able_to(:read, asset.id) }
+    end
   end
 
   describe "Given an asset that has been made publicly readable" do
@@ -52,6 +66,20 @@ describe Ability do
 
       it { should be_able_to(:discover, asset) }
       it { should be_able_to(:read, asset) }
+    end
+
+    context 'With an ID instead of a SolrDocument' do
+      let(:user) { create(:user) }
+      subject { ability }
+
+      let(:asset) {
+        create_solr_doc(id: 'public_read',
+                        read_access_group_ssim: ['public'])
+      }
+
+      # It should still work, even if we just pass in an ID
+      it { should be_able_to(:discover, asset.id) }
+      it { should be_able_to(:read, asset.id) }
     end
   end
 
