@@ -128,22 +128,21 @@ module Blacklight
       end
 
       module ClassMethods
-        #TODO: Instead of hard-coding these field keys, get them from the Config class
 
         def discover_group_field
-          "discover_access_group_ssim"
+          Blacklight::AccessControls.config.discover_group_field
         end
 
         def discover_user_field
-          "discover_access_person_ssim"
+          Blacklight::AccessControls.config.discover_user_field
         end
 
         def read_group_field
-          "read_access_group_ssim"
+          Blacklight::AccessControls.config.read_group_field
         end
 
         def read_user_field
-          "read_access_person_ssim"
+          Blacklight::AccessControls.config.read_user_field
         end
 
       end

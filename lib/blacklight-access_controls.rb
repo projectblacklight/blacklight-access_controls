@@ -15,9 +15,4 @@ module Blacklight::AccessControls
     alias :config :configure
   end
 
-  autoload :User
-  autoload :Config
-  autoload :PermissionsQuery
-  autoload :PermissionsCache
-  autoload :PermissionsSolrDocument
 end

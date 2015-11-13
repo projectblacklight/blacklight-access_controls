@@ -13,4 +13,57 @@ describe Blacklight::AccessControls::Config do
       expect(config.user_model).to eq 'Student'
     end
   end
+
+  describe '#discover_group_field' do
+    subject { config.discover_group_field }
+
+    it 'has a default value' do
+      expect(subject).to eq "discover_access_group_ssim"
+    end
+
+    it 'can be set to a non-default value' do
+      config.discover_group_field = 'something else'
+      expect(subject).to eq 'something else'
+    end
+  end
+
+  describe '#discover_user_field' do
+    subject { config.discover_user_field }
+
+    it 'has a default value' do
+      expect(subject).to eq "discover_access_person_ssim"
+    end
+
+    it 'can be set to a non-default value' do
+      config.discover_user_field = 'something else'
+      expect(subject).to eq 'something else'
+    end
+  end
+
+  describe '#read_group_field' do
+    subject { config.read_group_field }
+
+    it 'has a default value' do
+      expect(subject).to eq "read_access_group_ssim"
+    end
+
+    it 'can be set to a non-default value' do
+      config.read_group_field = 'something else'
+      expect(subject).to eq 'something else'
+    end
+  end
+
+  describe '#read_user_field' do
+    subject { config.read_user_field }
+
+    it 'has a default value' do
+      expect(subject).to eq "read_access_person_ssim"
+    end
+
+    it 'can be set to a non-default value' do
+      config.read_user_field = 'something else'
+      expect(subject).to eq 'something else'
+    end
+  end
+
 end
