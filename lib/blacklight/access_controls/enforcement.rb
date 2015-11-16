@@ -3,8 +3,6 @@ module Blacklight
     module Enforcement
       extend ActiveSupport::Concern
 
-
-
       included do
         attr_writer :current_ability
         class_attribute :solr_access_filters_logic
@@ -34,38 +32,35 @@ module Blacklight
         user_access_filters
       end
 
-# TODO 999: grep for: hydra edit 
+      #
+      # Action-specific enforcement
+      #
 
-  #
-  # Action-specific enforcement
-  #
+      # Controller "before" filter for enforcing access controls on show actions
+      # @param [Hash] opts (optional, not currently used)
+      def enforce_show_permissions(opts={})
+        permissions = current_ability.permissions_doc(params[:id])
+        unless can? :read, permissions
+          raise Blacklight::AccessControls::AccessDenied.new("You do not have sufficient access privileges to read this document, which has been marked private.", :read, params[:id])
+        end
+      end
 
-  # Controller "before" filter for enforcing access controls on show actions
-  # @param [Hash] opts (optional, not currently used)
-#  def enforce_show_permissions(opts={})
-#    permissions = current_ability.permissions_doc(params[:id])
-#
-#    unless can? :read, permissions
-#      raise Hydra::AccessDenied.new("You do not have sufficient access privileges to read this document, which has been marked private.", :read, params[:id])
-#    end
-#  end
+      #
+      # Solr query modifications
+      #
 
-  # Solr query modifications
-  #
-
-#  # Set solr_parameters to enforce appropriate permissions
-#  # * Applies a lucene query to the solr :q parameter for gated discovery
-#  # * Uses public_qt search handler if user does not have "read" permissions
-#  # @param solr_parameters the current solr parameters
-#  #
-#  # @example This method should be added to your CatalogController's search_params_logic
-#  #   class CatalogController < ApplicationController
-#  #     CatalogController.search_params_logic += [:add_access_controls_to_solr_params]
-#  #   end
-#  def add_access_controls_to_solr_params(solr_parameters)
-#    apply_gated_discovery(solr_parameters)
-#  end
-
+      # Set solr_parameters to enforce appropriate permissions
+      # * Applies a lucene query to the solr :q parameter for gated discovery
+      # * Uses public_qt search handler if user does not have "read" permissions
+      # @param solr_parameters the current solr parameters
+      #
+      # @example This method should be added to your CatalogController's search_params_logic
+      #   class CatalogController < ApplicationController
+      #     CatalogController.search_params_logic += [:add_access_controls_to_solr_params]
+      #   end
+      def add_access_controls_to_solr_params(solr_parameters)
+        apply_gated_discovery(solr_parameters)
+      end
 
       # Which permission levels (logical OR) will grant you the ability to discover documents in a search.
       # Override this method if you want it to be something other than the default
