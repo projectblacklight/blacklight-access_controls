@@ -14,16 +14,28 @@ class TestAppGenerator < Rails::Generators::Base
 
   def configure_blacklight
     say_status('status', 'CONFIGURING BLACKLIGHT', :yellow)
-
     remove_file 'config/blacklight.yml'
     copy_file 'blacklight.yml', 'config/blacklight.yml'
+  end
 
+  def add_blacklight_to_user_model
+    say_status('status', 'ADD BLACKLIGHT TO USER', :yellow)
     insert_into_file 'app/models/user.rb',
       "  include Blacklight::AccessControls::User\n",
       after: "class User < ActiveRecord::Base\n"
+  end
 
+  def replace_blacklight_catalog_controller
+    say_status('status', 'REPLACING BLACKLIGHT CATALOG CONTROLLER', :yellow)
     remove_file 'app/controllers/catalog_controller.rb'
     copy_file 'catalog_controller.rb', 'app/controllers/catalog_controller.rb'
+  end
+
+  def add_access_controls_to_search_builder
+    say_status('status', 'ADDING ACCESS CONTROLS TO SEARCH BUILDER', :yellow)
+    insert_into_file 'app/models/search_builder.rb',
+      "  include Blacklight::AccessControls::Enforcement\n",
+      before: "end"
   end
 
 #  def install_engine
