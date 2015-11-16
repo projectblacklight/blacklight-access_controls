@@ -9,5 +9,6 @@ module Blacklight
     autoload :PermissionsSolrDocument
     autoload :Ability
     autoload :Enforcement
+    autoload :SearchBuilder
   end
 end
