@@ -14,6 +14,9 @@ module Blacklight
         # CatalogController.solr_access_filters_logic += [:new_method]
         # CatalogController.solr_access_filters_logic.delete(:we_dont_want)
         self.solr_access_filters_logic = [:apply_group_permissions, :apply_user_permissions]
+
+        # Apply appropriate access controls to all solr queries
+        self.default_processor_chain += [:add_access_controls_to_solr_params]
       end
 
       def current_ability
@@ -33,19 +36,6 @@ module Blacklight
       end
 
       #
-      # Action-specific enforcement
-      #
-
-      # Controller "before" filter for enforcing access controls on show actions
-      # @param [Hash] opts (optional, not currently used)
-      def enforce_show_permissions(opts={})
-        permissions = current_ability.permissions_doc(params[:id])
-        unless can? :read, permissions
-          raise Blacklight::AccessControls::AccessDenied.new("You do not have sufficient access privileges to read this document, which has been marked private.", :read, params[:id])
-        end
-      end
-
-      #
       # Solr query modifications
       #
 
@@ -53,11 +43,6 @@ module Blacklight
       # * Applies a lucene query to the solr :q parameter for gated discovery
       # * Uses public_qt search handler if user does not have "read" permissions
       # @param solr_parameters the current solr parameters
-      #
-      # @example This method should be added to your CatalogController's search_params_logic
-      #   class CatalogController < ApplicationController
-      #     CatalogController.search_params_logic += [:add_access_controls_to_solr_params]
-      #   end
       def add_access_controls_to_solr_params(solr_parameters)
         apply_gated_discovery(solr_parameters)
       end
@@ -71,7 +56,7 @@ module Blacklight
         @discovery_permissions = permissions
       end
 
-      # Contrller before filter that sets up access-controlled lucene query in order to provide gated discovery behavior
+      # Controller before filter that sets up access-controlled lucene query in order to provide gated discovery behavior
       # @param solr_parameters the current solr parameters
       def apply_gated_discovery(solr_parameters)
         solr_parameters[:fq] ||= []

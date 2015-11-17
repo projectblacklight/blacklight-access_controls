@@ -2,15 +2,14 @@
 class CatalogController < ApplicationController  
 
   include Blacklight::Catalog
-  include Blacklight::AccessControls::SearchBuilder
+  include Blacklight::AccessControls::Catalog
 
   # Apply the blacklight-access_controls
   before_filter :enforce_show_permissions, only: :show
 
-  # Apply appropriate access controls to all solr queries
-  CatalogController.search_params_logic += [:add_access_controls_to_solr_params]
-
   configure_blacklight do |config|
+    config.search_builder_class = ::SearchBuilder
+
     ## Default parameters to send to solr for all search-like requests. See also SearchBuilder#processed_parameters
     config.default_solr_params = { 
       :qt => 'search',

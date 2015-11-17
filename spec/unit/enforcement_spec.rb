@@ -1,23 +1,15 @@
 require 'spec_helper'
 
-class MockController < ApplicationController
-  include Blacklight::AccessControls::Enforcement
-  attr_accessor :params
-
-  def current_ability
-    @current_ability ||= Ability.new(current_user)
-  end
-
-  def session
-  end
-
-  delegate :logger, to: :Rails
-end
-
-
 describe Blacklight::AccessControls::Enforcement do
-  let(:controller) { MockController.new }
-  subject { controller }
+  let(:controller) { CatalogController.new }
+  let(:search_builder) { SearchBuilder.new(method_chain, context) }
+  let(:method_chain) { CatalogController.search_params_logic }
+  let(:context) { controller }
+
+  let(:user) { User.new }
+  let(:ability) { Ability.new(user) }
+
+  subject { search_builder }
 
   describe "When I am searching for content" do
     before do
@@ -26,7 +18,7 @@ describe Blacklight::AccessControls::Enforcement do
 
     context "Given I am not logged in" do
       before do
-        allow(subject).to receive(:current_user).and_return(User.new)
+        subject.current_ability = ability
         subject.send(:apply_gated_discovery, @solr_parameters)
       end
 
@@ -135,10 +127,7 @@ describe Blacklight::AccessControls::Enforcement do
 
   describe "apply_user_permissions" do
     describe "when the user is a guest user (user key nil)" do
-      before do
-        stub_user = User.new
-        allow(subject).to receive(:current_user).and_return(stub_user)
-      end
+      before { subject.current_ability = ability }
 
       it "should not create filters" do
         expect(subject.send(:apply_user_permissions, ["discover","read"])).to eq []
@@ -146,41 +135,11 @@ describe Blacklight::AccessControls::Enforcement do
     end
 
     describe "when the user is a guest user (user key empty string)" do
-      before do
-        stub_user = User.new email: ''
-        allow(subject).to receive(:current_user).and_return(stub_user)
-      end
+      let(:user) { User.new(email: '') }
+      before { subject.current_ability = ability }
 
       it "should not create filters" do
         expect(subject.send(:apply_user_permissions, ["discover","read"])).to eq []
-      end
-    end
-  end
-
-  describe '#enforce_show_permissions' do
-    subject { controller.send(:enforce_show_permissions) }
-    let(:params) {{ id: doc.id }}
-
-    before do
-      allow(controller).to receive(:current_user).and_return(user)
-      allow(controller).to receive(:params).and_return(params)
-    end
-
-    context 'when user is not logged in' do
-      let(:doc) { create_solr_doc(id: '123') }
-      let(:user) { User.new }
-
-      it 'denies access' do
-        expect { subject }.to raise_error(Blacklight::AccessControls::AccessDenied)
-      end
-    end
-
-    context 'when user has access' do
-      let(:doc) { create_solr_doc(id: '123', read_access_person_ssim: user.email) }
-      let(:user) { build(:user) }
-
-      it 'allows access' do
-        expect { subject }.to_not raise_error
       end
     end
   end
