@@ -1,0 +1,93 @@
+<dataConfig>
+    <dataSource driver="com.mysql.jdbc.Driver" url="jdbc:mysql://<host>/<database>" user="<user>" password="<password>" />
+    <document>
+      <entity name="submission"
+              query="select * from submissions where status = 'released for publication'"
+              deltaImportQuery="select * from submissions where id='${dih.delta.id}' and status = 'released for publication'"
+              deltaQuery="select id from submissions where updated_at > '${dataimporter.last_index_time}' and status = 'released for publication'">
+          <field name="access_level_ss" column="access_level" />
+          <field name="semester_ssi" column="semester" />
+          <field name="year_isi" column="year" />
+          <field name="title_ssi" column="title" />
+          <field name="abstract_tesi" column="abstract" />
+          <field name="defended_at_dtsi" column="defended_at" />
+
+
+        <entity name="final_submission_file" query="select * from final_submission_files where submission_id='${submission.id}'"
+                deltaQuery="select * from final_submission_files where updated_at > '${dataimporter.last_index_time}'"
+                parentDeltaQuery="select id from submissions where id=${final_submission_file.submission_id}">
+          <field column="asset" name="file_name_ssim" />
+        </entity>
+
+        <entity name="author" query="select id, first_name, last_name, middle_name from authors where id=${submission.author_id}"
+                deltaQuery="select * from authors where updated_at > '${dataimporter.last_index_time}'"
+                parentDeltaQuery="select id from submissions where author_id=${author.id}">
+          <field column="first_name" name="first_name_ssi" />
+          <field column="last_name" name="last_name_ssi" />
+          <field column="middle_name" name="middle_name_ssi" />
+          <field column="psu_email_address" name="email_ssi" />
+        </entity>
+
+        <entity name="degree" query="select id, name, description, degree_type_id from degrees where id=${submission.degree_id}"
+                deltaQuery="select * from degrees where updated_at > '${dataimporter.last_index_time}'"
+                parentDeltaQuery="select id from submissions where degree_id=${degree.id}">
+          <field column="name" name="degree_name_ssi" />
+          <field column="description" name="degree_description_ssi" />
+
+          <entity name="degree_type" query="select id, name from degree_types where id=${degree.degree_type_id}" >
+            <field column="name" name="degree_type_ssi" />
+            <field column="name" name="degree_type_slug_ssi" />
+          </entity>
+        </entity>
+
+        <entity name="program" query="select id, name from programs where id=${submission.program_id}"
+                deltaQuery="select * from programs where updated_at > '${dataimporter.last_index_time}'"
+                parentDeltaQuery="select id from submissions where program_id=${program.id}">
+          <field column="name" name="program_name_ssi" />
+        </entity>
+
+        <entity name="committee_member" query="select id, name, committee_role_id, email from committee_members where submission_id=${submission.id}"
+                deltaQuery="select * from committee_members where updated_at > '${dataimporter.last_index_time}'"
+                parentDeltaQuery="select id from submissions where id=${committee_member.submission_id}">
+          <field column="name" name="committee_member_name_ssim" />
+          <field column="email" name="committee_member_email_ssim" />
+          <entity name="committee_role" query="select id, name from committee_roles where id=${committee_member.committee_role_id}" >
+            <field column="name" name="committee_member_role_ssim" />
+          </entity>
+
+        </entity>
+
+        <entity name="keyword" query="select id, word from keywords where submission_id=${submission.id}"
+              deltaQuery="select * from keywords where updated_at > '${dataimporter.last_index_time}'"
+              parentDeltaQuery="select id from submissions where id=${keyword.submission_id}">
+          <field column="word" name="keyword_ssim" />
+        </entity>
+
+        <!--<entity name="program" query="select id, name from programs where id=${submission.program_id}"-->
+                <!--deltaQuery="select * from programs where updated_at > '${dataimporter.last_index_time}'"-->
+                <!--parentDeltaQuery="select ID from submissions where id=${program.id}">-->
+          <!--<field column="name" name="program_name_ssi" />-->
+        <!--</entity>-->
+
+        <!--<entity name="feature"-->
+                    <!--query="select DESCRIPTION from FEATURE where ITEM_ID='${item.ID}'"-->
+                    <!--deltaQuery="select ITEM_ID from FEATURE where last_modified > '${dataimporter.last_index_time}'"-->
+                    <!--parentDeltaQuery="select ID from item where ID=${feature.ITEM_ID}">-->
+                <!--<field name="features" column="DESCRIPTION" />-->
+        <!--</entity>-->
+
+        <!--<entity name="item_category"-->
+                <!--query="select CATEGORY_ID from item_category where ITEM_ID='${item.ID}'"-->
+                <!--deltaQuery="select ITEM_ID, CATEGORY_ID from item_category where last_modified > '${dataimporter.last_index_time}'"-->
+                <!--parentDeltaQuery="select ID from item where ID=${item_category.ITEM_ID}">-->
+          <!--<entity name="category"-->
+                        <!--query="select DESCRIPTION from category where ID = '${item_category.CATEGORY_ID}'"-->
+                        <!--deltaQuery="select ID from category where last_modified > '${dataimporter.last_index_time}'"-->
+                        <!--parentDeltaQuery="select ITEM_ID, CATEGORY_ID from item_category where CATEGORY_ID=${category.ID}">-->
+             <!--<field column="DESCRIPTION" name="cat" />-->
+          <!--</entity>-->
+        <!--</entity>-->
+      </entity>
+    </document>
+</dataConfig>
+

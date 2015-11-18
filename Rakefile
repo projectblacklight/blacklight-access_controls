@@ -1,26 +1,47 @@
 #!/usr/bin/env rake
 
-require 'engine_cart/rake_task'
+require 'solr_wrapper'
 
-ZIP_URL = "https://github.com/projectblacklight/blacklight-jetty/archive/v4.10.4.zip"
-require 'jettywrapper'
+SOLR_OPTIONS = {
+    verbose: true,
+    cloud: false,
+    port: '8983',
+    version: '5.3.1',
+    instance_dir: 'solr',
+    download_dir: 'tmp'
+}
+
+SolrWrapper.default_instance_options = SOLR_OPTIONS
+
+require 'solr_wrapper/rake_task'
+require 'engine_cart/rake_task'
 
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec)
-task :default => :spec
 
-namespace :jetty do
+task :default => 'solr:spec'
 
-  desc "Copies the contents of solr_conf into the Solr blacklight-core and test-core"
-  task :config_solr do
-    FileUtils.cp_r 'jetty/solr/blacklight-core', 'jetty/solr/test-core'
+def solr_config_dir
+  File.join(File.expand_path(File.dirname(__FILE__)), "solr_conf", "conf")
+end
 
-    FileUtils.cp 'solr_conf/solr.xml', 'jetty/solr/blacklight-core'
-    FileUtils.cp 'solr_conf/solr.xml', 'jetty/solr/test-core'
+namespace :solr do
 
-    FileList['solr_conf/conf/*'].each do |f|
-      cp("#{f}", 'jetty/solr/blacklight-core/conf/', verbose: true)
-      cp("#{f}", 'jetty/solr/test-core/conf/', verbose: true)
+  desc 'Configure solr cores'
+  task :config do
+    SolrWrapper.wrap do |solr|
+      core = solr.create(name: 'development', dir: solr_config_dir)
+      core = solr.create(name: 'test', dir: solr_config_dir)
     end
   end
+
+  desc "Run test suite (with solr wrapper)"
+  task :spec do
+    SolrWrapper.wrap do |solr|
+      solr.with_collection(name:'test', dir: solr_config_dir) do |collection_name|
+        Rake::Task['spec'].invoke
+      end
+    end
+  end
+
 end

@@ -23,7 +23,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "rake", '~> 10.1'
   gem.add_development_dependency 'rspec', '~> 3.1'
   gem.add_development_dependency "engine_cart", "~> 0.8"
-  gem.add_development_dependency "jettywrapper"
+  gem.add_development_dependency "solr_wrapper"
   gem.add_development_dependency "factory_girl_rails", "~> 4.0"
   gem.add_development_dependency "database_cleaner"
 end
