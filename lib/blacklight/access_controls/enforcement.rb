@@ -69,16 +69,10 @@ module Blacklight
         user_access_filters = []
         ability.user_groups.each_with_index do |group, i|
           permission_types.each do |type|
-            method_name = "#{type}_group_field".to_sym
-            solr_field = Blacklight::AccessControls.config.send(method_name)
-            user_access_filters << escape_filter(solr_field, group)
+            user_access_filters << escape_filter(solr_field_for(type, 'group'), group)
           end
         end
         user_access_filters
-      end
-
-      def escape_filter(key, value)
-        [key, value.gsub(/[ :\/]/, ' ' => '\ ', '/' => '\/', ':' => '\:')].join(':')
       end
 
       def apply_user_permissions(permission_types, ability = current_ability)
@@ -87,12 +81,21 @@ module Blacklight
         user = ability.current_user
         if user && user.user_key.present?
           permission_types.each do |type|
-            method_name = "#{type}_user_field".to_sym
-            solr_field = Blacklight::AccessControls.config.send(method_name)
-            user_access_filters << escape_filter(solr_field, user.user_key)
+            user_access_filters << escape_filter(solr_field_for(type, 'user'), user.user_key)
           end
         end
         user_access_filters
+      end
+
+      # Find the name of the solr field for this type of permission.
+      # e.g. "read_access_group_ssim" or "discover_access_person_ssim".
+      def solr_field_for(permission_type, permission_category)
+        method_name = "#{permission_type}_#{permission_category}_field".to_sym
+        Blacklight::AccessControls.config.send(method_name)
+      end
+
+      def escape_filter(key, value)
+        [key, value.gsub(/[ :\/]/, ' ' => '\ ', '/' => '\/', ':' => '\:')].join(':')
       end
 
     end
