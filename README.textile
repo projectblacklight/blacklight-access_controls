@@ -2,5 +2,41 @@ h1. Blacklight Access Controls
 
 Provides access controls for Blacklight-based applications.
 
-*Background*:  Much of this code was extracted from [hydra-access-controls](https://github.com/projecthydra/hydra-head/tree/master/hydra-access-controls).
+*Background*:  Much of this code was extracted from "hydra-access-controls":https://github.com/projecthydra/hydra-head/tree/master/hydra-access-controls
+
+h2. Developer Notes
+
+This section contains information about working on the blacklight-access_controls gem itself.
+
+h3. Set up Solr
+
+<pre>
+$ bundle exec rake solr:clean
+$ bundle exec rake solr:config
+$ bundle exec rake solr:start
+$ bundle exec rake solr:stop
+</pre>
+
+h3. Generate a Rails test app
+
+<pre>
+$ bundle exec rake engine_cart:clean
+$ bundle exec rake engine_cart:generate
+</pre>
+
+h3. Run the test suite
+
+<pre>
+$ bundle exec rake engine_cart:clean
+$ bundle exec rake engine_cart:generate
+$ bundle exec rake solr:spec
+</pre>
+
+h3. Run the Rails server in development mode
+
+<pre>
+$ bundle exec rake solr:start
+$ bundle exec rake engine_cart:generate
+$ bundle exec rake engine_cart:server
+</pre>
 
