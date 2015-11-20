@@ -11,6 +11,9 @@ module Blacklight::AccessControls
       doc
     end
 
+    def permissions_document_class
+      Blacklight::AccessControls::PermissionsSolrDocument
+    end
 
     protected
 
@@ -26,7 +29,7 @@ module Blacklight::AccessControls
       solr_response = Blacklight::Solr::Response.new(response, solr_opts)
 
       raise Blacklight::Exceptions::InvalidSolrID.new("The solr permissions search handler didn't return anything for id \"#{id}\"") if solr_response.docs.empty?
-      Blacklight::AccessControls::PermissionsSolrDocument.new(solr_response.docs.first, solr_response)
+      permissions_document_class.new(solr_response.docs.first, solr_response)
     end
 
     #

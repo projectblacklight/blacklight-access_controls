@@ -28,6 +28,13 @@ describe Blacklight::AccessControls::Catalog do
       it 'allows access' do
         expect { subject }.to_not raise_error
       end
+
+      # So that you can override enforce_show_permissions
+      # to call "super" and then add more permissions checks
+      # after that without having to re-fetch the document.
+      it 'returns the permissions doc' do
+        expect(subject).to be_a(Blacklight::AccessControls::PermissionsSolrDocument)
+      end
     end
   end
 
