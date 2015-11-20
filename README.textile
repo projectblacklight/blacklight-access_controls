@@ -21,7 +21,7 @@ h3. Run the generator
 
 <pre>
 rails generate blacklight:access_controls
-<pre>
+</pre>
 
 h2. Developer Notes
 
