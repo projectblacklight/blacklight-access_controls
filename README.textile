@@ -24,7 +24,7 @@ h3. Run the generator
 rails generate blacklight:access_controls
 </pre>
 
-h3. Implement "user.groups"
+h3. Implement user.groups
 
 * If you are using LDAP or some other way of controlling group-level access to records, implement a 'groups' method on your User model.  If you call user.groups method on a user, it should return a list of groups that the user belongs to.
 
