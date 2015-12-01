@@ -4,6 +4,7 @@ Provides access controls for Blacklight-based applications.
 
 *Background*:  Much of this code was extracted from "hydra-access-controls":https://github.com/projecthydra/hydra-head/tree/master/hydra-access-controls
 
+
 h2. Adding Access Controls to a Blacklight App
 
 h3. Install the gem
@@ -22,6 +23,18 @@ h3. Run the generator
 <pre>
 rails generate blacklight:access_controls
 </pre>
+
+
+h2. Using Access Controls
+
+Some notes about using blacklight-access_controls within your Blacklight app:
+
+* You can grant access to a record to specific users or groups by adding them to the correct fields in the solr document.  For example, discover_access_group_ssim: "public" or read_access_person_ssim: "frodo@example.com".
+
+* The gem expects user.groups to return a list of groups that the user belongs to.  By default, all users belong to a group called "public", and all logged-in users belong to a group called "registered".
+
+* If you want a record to be readable by the public, you need to add "public" to the "read_access_group_ssim" field in the solr document, or if you want discover-only access, add "public" to "discover_access_group_ssim".  (Discover-only means that the user can see that the record exists in a catalog search, but won't be able to view the record itself.)
+
 
 h2. Developer Notes
 
