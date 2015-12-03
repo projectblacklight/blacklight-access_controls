@@ -34,11 +34,8 @@ h2. Using Access Controls
 Some notes about using blacklight-access_controls within your Blacklight app:
 
 * Blacklight Access Controls allows 3 types of access to a record:  discover, read, or download.  Of course, you can change or redefine the meaning of these access levels in your own app, but within the context of blacklight-access_controls, the 3 levels of access mean this:
-
 ** Discover access allows the user to see that a record does exist and view minimal metadata about the record, but the user may not be allowed to read or download the full record. (e.g. The user can see the record in a search results list, but if they visit the show page of the record, they will be denied access.)
-
 ** Read access allows the user to view the entire record, but the user might not be able to download attached files.
-
 ** Download access allows the user to download the full record and/or files that are attached to the record.
 
 * The access levels are hierarchical, so if you grant "download" access to a user, the user will automatically be granted "read" and "discover" access.  If you grant "read" access, the user will also have "discover" access, but not "download" access.
