@@ -33,7 +33,7 @@ describe Blacklight::AccessControls::Catalog do
       # to call "super" and then add more permissions checks
       # after that without having to re-fetch the document.
       it 'returns the permissions doc' do
-        expect(subject).to be_a(Blacklight::AccessControls::PermissionsSolrDocument)
+        expect(subject).to be_a(SolrDocument)
       end
     end
   end

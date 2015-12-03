@@ -12,7 +12,7 @@ module Blacklight::AccessControls
     end
 
     def permissions_document_class
-      Blacklight::AccessControls::PermissionsSolrDocument
+      SolrDocument
     end
 
     protected

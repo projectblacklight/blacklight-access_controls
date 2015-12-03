@@ -6,7 +6,6 @@ module Blacklight
     autoload :User
     autoload :PermissionsQuery
     autoload :PermissionsCache
-    autoload :PermissionsSolrDocument
     autoload :Ability
     autoload :Enforcement
     autoload :Catalog
