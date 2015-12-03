@@ -33,11 +33,33 @@ h2. Using Access Controls
 
 Some notes about using blacklight-access_controls within your Blacklight app:
 
-* You can grant access to a record to specific users or groups by adding them to the correct fields in the solr document.  For example, discover_access_group_ssim: "public" or read_access_person_ssim: "frodo@example.com".
+* You can grant access to a record to specific users or groups by adding them to the correct fields in the solr document.  For example:
+
+<pre>
+  {
+    discover_access_group_ssim: "public",
+    read_access_person_ssim: "bilbo@example.com",
+    download_access_person_ssim: "frodo@example.com"
+  }
+</pre>
 
 * The gem expects user.groups to return a list of groups that the user belongs to.  By default, all users belong to a group called "public", and all logged-in users belong to a group called "registered".
 
 * If you want a record to be readable by the public, you need to add "public" to the "read_access_group_ssim" field in the solr document, or if you want discover-only access, add "public" to "discover_access_group_ssim".  (Discover-only means that the user can see that the record exists in a catalog search, but won't be able to view the record itself.)
+
+* If you grant download access to a user or group, blacklight-access_controls will grant access only to the SolrDocument (or the ID of the SolrDocument).  If you want the user to be able to download a different type of object such as an attached file, you may need to add that permission into your cancan abilities.  In this example, we check the permissions of the user id for the object itself, instead of for the SolrDocument that indexes the object:
+
+<pre>
+  can :download, AttachedFile, parent: { user_id: user.id }
+</pre>
+
+* If you want to test download access against the solr document instead of against the object (for example, to decide whether or not to display a download link on an index or show page), then you can just add a normal cancan check in your controller or view.  There is no need to add anything special to the cancan ability class.
+
+<pre>
+  if can? :download, solr_document
+    # do something
+  end
+</pre>
 
 
 h2. Developer Notes

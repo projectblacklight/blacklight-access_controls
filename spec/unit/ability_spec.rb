@@ -10,6 +10,8 @@ describe Ability do
       expect(Ability.read_user_field).to eq 'read_access_person_ssim'
       expect(Ability.discover_group_field).to eq 'discover_access_group_ssim'
       expect(Ability.discover_user_field).to eq 'discover_access_person_ssim'
+      expect(Ability.download_group_field).to eq 'download_access_group_ssim'
+      expect(Ability.download_user_field).to eq 'download_access_person_ssim'
     end
   end
 
@@ -23,6 +25,7 @@ describe Ability do
 
       it { should     be_able_to(:discover, asset) }
       it { should_not be_able_to(:read, asset) }
+      it { should_not be_able_to(:download, asset) }
     end
 
     context "Then a registered user" do
@@ -31,6 +34,7 @@ describe Ability do
 
       it { should     be_able_to(:discover, asset) }
       it { should_not be_able_to(:read, asset) }
+      it { should_not be_able_to(:download, asset) }
     end
 
     context 'With an ID instead of a SolrDocument' do
@@ -45,6 +49,7 @@ describe Ability do
       # It should still work, even if we just pass in an ID
       it { should     be_able_to(:discover, asset.id) }
       it { should_not be_able_to(:read, asset.id) }
+      it { should_not be_able_to(:download, asset.id) }
     end
   end
 
@@ -56,16 +61,18 @@ describe Ability do
       let(:user) { nil }
       subject { ability }
 
-      it { should be_able_to(:discover, asset) }
-      it { should be_able_to(:read, asset) }
+      it { should     be_able_to(:discover, asset) }
+      it { should     be_able_to(:read, asset) }
+      it { should_not be_able_to(:download, asset) }
     end
 
     context "Then a registered user" do
       let(:user) { create(:user) }
       subject { ability }
 
-      it { should be_able_to(:discover, asset) }
-      it { should be_able_to(:read, asset) }
+      it { should     be_able_to(:discover, asset) }
+      it { should     be_able_to(:read, asset) }
+      it { should_not be_able_to(:download, asset) }
     end
 
     context 'With an ID instead of a SolrDocument' do
@@ -78,10 +85,51 @@ describe Ability do
       }
 
       # It should still work, even if we just pass in an ID
-      it { should be_able_to(:discover, asset.id) }
-      it { should be_able_to(:read, asset.id) }
+      it { should     be_able_to(:discover, asset.id) }
+      it { should     be_able_to(:read, asset.id) }
+      it { should_not be_able_to(:download, asset.id) }
     end
   end
+
+  describe "Given an asset that has been made publicly downloadable" do
+    let(:id) { 'public_download' }
+    let(:asset) { SolrDocument.new(id: id,
+                    download_access_group_ssim: ['public']) }
+
+    context "Then a not-signed-in user" do
+      let(:user) { nil }
+      subject { ability }
+
+      it { should be_able_to(:discover, asset) }
+      it { should be_able_to(:read, asset) }
+      it { should be_able_to(:download, asset) }
+    end
+
+    context "Then a registered user" do
+      let(:user) { create(:user) }
+      subject { ability }
+
+      it { should be_able_to(:discover, asset) }
+      it { should be_able_to(:read, asset) }
+      it { should be_able_to(:download, asset) }
+    end
+
+    context 'With an ID instead of a record' do
+      let(:user) { create(:user) }
+      subject { ability }
+
+      let(:asset) {
+        create_solr_doc(id: id,
+                        download_access_group_ssim: ['public'])
+      }
+
+      # It should still work, even if we just pass in an ID
+      it { should be_able_to(:discover, asset.id) }
+      it { should be_able_to(:read, asset.id) }
+      it { should be_able_to(:download, asset.id) }
+    end
+  end
+
 
   describe "Given an asset to which a specific user has discovery access" do
     let(:user_with_access) { create(:user) }
@@ -93,6 +141,7 @@ describe Ability do
 
       it { should_not be_able_to(:discover, asset) }
       it { should_not be_able_to(:read, asset) }
+      it { should_not be_able_to(:download, asset) }
     end
 
     context "Then a different registered user" do
@@ -101,6 +150,7 @@ describe Ability do
 
       it { should_not be_able_to(:discover, asset) }
       it { should_not be_able_to(:read, asset) }
+      it { should_not be_able_to(:download, asset) }
     end
 
     context "Then that user" do
@@ -109,6 +159,7 @@ describe Ability do
 
       it { should     be_able_to(:discover, asset) }
       it { should_not be_able_to(:read, asset) }
+      it { should_not be_able_to(:download, asset) }
     end
   end
 
@@ -122,6 +173,7 @@ describe Ability do
 
       it { should_not be_able_to(:discover, asset) }
       it { should_not be_able_to(:read, asset) }
+      it { should_not be_able_to(:download, asset) }
     end
 
     context "Then a different registered user" do
@@ -130,6 +182,39 @@ describe Ability do
 
       it { should_not be_able_to(:discover, asset) }
       it { should_not be_able_to(:read, asset) }
+      it { should_not be_able_to(:download, asset) }
+    end
+
+    context "Then that user" do
+      let(:user) { user_with_access }
+      subject { ability }
+
+      it { should     be_able_to(:discover, asset) }
+      it { should     be_able_to(:read, asset) }
+      it { should_not be_able_to(:download, asset) }
+    end
+  end
+
+  describe "Given an asset to which a specific user has download access" do
+    let(:user_with_access) { create(:user) }
+    let(:asset) { SolrDocument.new(id: 'user_read', download_access_person_ssim: [user_with_access.email]) }
+
+    context "Then a not-signed-in user" do
+      let(:user) { nil }
+      subject { ability }
+
+      it { should_not be_able_to(:discover, asset) }
+      it { should_not be_able_to(:read, asset) }
+      it { should_not be_able_to(:download, asset) }
+    end
+
+    context "Then a different registered user" do
+      let(:user) { create(:user) }
+      subject { ability }
+
+      it { should_not be_able_to(:discover, asset) }
+      it { should_not be_able_to(:read, asset) }
+      it { should_not be_able_to(:download, asset) }
     end
 
     context "Then that user" do
@@ -138,6 +223,7 @@ describe Ability do
 
       it { should be_able_to(:discover, asset) }
       it { should be_able_to(:read, asset) }
+      it { should be_able_to(:download, asset) }
     end
   end
 

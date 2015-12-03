@@ -66,4 +66,30 @@ describe Blacklight::AccessControls::Config do
     end
   end
 
+  describe '#download_group_field' do
+    subject { config.download_group_field }
+
+    it 'has a default value' do
+      expect(subject).to eq "download_access_group_ssim"
+    end
+
+    it 'can be set to a non-default value' do
+      config.download_group_field = 'something else'
+      expect(subject).to eq 'something else'
+    end
+  end
+
+  describe '#download_user_field' do
+    subject { config.download_user_field }
+
+    it 'has a default value' do
+      expect(subject).to eq "download_access_person_ssim"
+    end
+
+    it 'can be set to a non-default value' do
+      config.download_user_field = 'something else'
+      expect(subject).to eq 'something else'
+    end
+  end
+
 end
