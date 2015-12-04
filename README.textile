@@ -21,7 +21,19 @@ h3. Configure solr
 h3. Run the generator
 
 <pre>
-rails generate blacklight:access_controls
+  rails generate blacklight:access_controls
+</pre>
+
+If you want to use a different user model than "User", you can pass an argument to the generator
+
+<pre>
+  rails generate blacklight:access_controls -m Student
+</pre>
+
+If you have more than one search builder class, or if your search builder is located someplace other than app/models/search_builder.rb, you can pass an argument to the generator
+
+<pre>
+  rails generate blacklight:access_controls -b app/search_builders/search_one.rb app/search_builders/search_two.rb
 </pre>
 
 h3. Implement user.groups
