@@ -19,14 +19,13 @@ require 'engine_cart/rake_task'
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec)
 
-task :default => 'solr:spec'
+task default: 'ci'
 
 def solr_config_dir
   File.join(File.expand_path(File.dirname(__FILE__)), "solr_conf", "conf")
 end
 
 namespace :solr do
-
   desc 'Configure solr cores'
   task :config do
     SolrWrapper.wrap do |solr|
@@ -43,5 +42,7 @@ namespace :solr do
       end
     end
   end
-
 end
+
+desc "Run CI build"
+task ci: ['engine_cart:generate', 'solr:spec']
