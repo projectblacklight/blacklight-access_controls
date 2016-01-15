@@ -7,9 +7,9 @@ module Blacklight
 
       # Override blacklight to produce a search_builder that has
       # the current ability in context
-      def search_builder processor_chain = search_params_logic
-        super(true).tap { |builder| builder.current_ability = current_ability }
-      end 
+      def search_builder
+        super.tap { |builder| builder.current_ability = current_ability }
+      end
 
       # Controller "before" filter for enforcing access controls
       # on show actions.

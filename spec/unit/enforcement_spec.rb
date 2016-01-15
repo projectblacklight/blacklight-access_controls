@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Blacklight::AccessControls::Enforcement do
   let(:controller) { CatalogController.new }
   let(:search_builder) { SearchBuilder.new(method_chain, context) }
-  let(:method_chain) { CatalogController.search_params_logic }
+  let(:method_chain) { SearchBuilder.default_processor_chain }
   let(:context) { controller }
 
   let(:user) { User.new }
