@@ -56,5 +56,10 @@ module Blacklight
       copy_file 'ability.rb', 'app/models/ability.rb'
     end
 
+    def add_configuration
+      say_status('status', 'ADDING BLACKLIGHT ACCESS CONTROLS CONFIGURATION', :yellow)
+      copy_file 'blacklight_access_controls.rb', 'config/initializers/blacklight_access_controls.rb'
+    end
+
   end
 end
