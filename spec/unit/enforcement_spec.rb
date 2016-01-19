@@ -63,6 +63,28 @@ describe Blacklight::AccessControls::Enforcement do
     end
   end
 
+  describe "#except" do
+    let(:user) { build(:user) }
+    let(:ability) { Ability.new(user) }
+    before { search_builder.current_ability = ability }
+    subject { search_builder.except('foo') }
+
+    it "keeps the current_ability set" do
+      expect(subject.current_ability).to eq ability
+    end
+  end
+
+  describe "#append" do
+    let(:user) { build(:user) }
+    let(:ability) { Ability.new(user) }
+    before { search_builder.current_ability = ability }
+    subject { search_builder.append('foo') }
+
+    it "keeps the current_ability set" do
+      expect(subject.current_ability).to eq ability
+    end
+  end
+
   describe "apply_gated_discovery" do
     let(:user) { create(:user) }
     let(:groups) { ["archivist","researcher"] }

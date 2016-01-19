@@ -23,6 +23,14 @@ module Blacklight
         @current_ability || raise("current_ability has not been set on #{self}")
       end
 
+      def except(*)
+        super.tap { |new_builder| new_builder.current_ability = current_ability }
+      end
+
+      def append(*)
+        super.tap { |new_builder| new_builder.current_ability = current_ability }
+      end
+
       protected
 
       def gated_discovery_filters(permission_types = discovery_permissions, ability = current_ability)
