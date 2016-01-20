@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Blacklight::AccessControls::Enforcement do
   let(:controller) { CatalogController.new }
   let(:search_builder) { SearchBuilder.new(method_chain, context) }
-  let(:method_chain) { CatalogController.search_params_logic }
+  let(:method_chain) { SearchBuilder.default_processor_chain }
   let(:context) { controller }
 
   let(:user) { User.new }
@@ -60,6 +60,28 @@ describe Blacklight::AccessControls::Enforcement do
           end
         end
       end
+    end
+  end
+
+  describe "#except" do
+    let(:user) { build(:user) }
+    let(:ability) { Ability.new(user) }
+    before { search_builder.current_ability = ability }
+    subject { search_builder.except('foo') }
+
+    it "keeps the current_ability set" do
+      expect(subject.current_ability).to eq ability
+    end
+  end
+
+  describe "#append" do
+    let(:user) { build(:user) }
+    let(:ability) { Ability.new(user) }
+    before { search_builder.current_ability = ability }
+    subject { search_builder.append('foo') }
+
+    it "keeps the current_ability set" do
+      expect(subject.current_ability).to eq ability
     end
   end
 

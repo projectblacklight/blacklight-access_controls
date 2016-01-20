@@ -20,6 +20,7 @@ else
   Bundler.ui.warn "[EngineCart] Unable to find test application dependencies in #{file}, using placeholder dependencies"
 
   gem 'rails', ENV['RAILS_VERSION'] if ENV['RAILS_VERSION']
+  gem 'blacklight', github: 'projectblacklight/blacklight'
 
   if ENV['RAILS_VERSION'].nil? || ENV['RAILS_VERSION'] =~ /^4.2/
     gem 'responders', "~> 2.0"
