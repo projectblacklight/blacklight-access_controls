@@ -6,12 +6,6 @@ module Blacklight
     module Catalog
       extend ActiveSupport::Concern
 
-      # Override blacklight to produce a search_builder that has
-      # the current ability in context
-      def search_builder
-        super.tap { |builder| builder.current_ability = current_ability }
-      end
-
       # Controller "before" filter for enforcing access controls
       # on show actions.
       # @param [Hash] opts (optional, not currently used)
