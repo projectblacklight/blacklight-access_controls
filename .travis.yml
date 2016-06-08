@@ -20,3 +20,5 @@ notifications:
 
 global_env:
   - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+before_script:
+  - jdk_switcher use oraclejdk8
