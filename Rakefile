@@ -8,18 +8,6 @@ end
 Bundler::GemHelper.install_tasks
 
 require 'solr_wrapper'
-
-SOLR_OPTIONS = {
-    verbose: true,
-    cloud: false,
-    port: '8983',
-    version: '5.3.1',
-    instance_dir: 'solr',
-    download_dir: 'tmp'
-}
-
-SolrWrapper.default_instance_options = SOLR_OPTIONS
-
 require 'solr_wrapper/rake_task'
 require 'engine_cart/rake_task'
 
