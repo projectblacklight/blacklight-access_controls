@@ -12,6 +12,10 @@ describe Blacklight::AccessControls::Enforcement do
 
   subject { search_builder }
 
+  before do
+    allow(controller).to receive(:current_ability).and_return(ability)
+  end
+
   describe "When I am searching for content" do
     before do
       @solr_parameters = {}
@@ -19,7 +23,6 @@ describe Blacklight::AccessControls::Enforcement do
 
     context "Given I am not logged in" do
       before do
-        subject.current_ability = ability
         subject.send(:apply_gated_discovery, @solr_parameters)
       end
 
@@ -33,11 +36,13 @@ describe Blacklight::AccessControls::Enforcement do
     end
 
     context "Given I am a registered user" do
-      let(:user) { create(:user) }
+      let(:user) do
+        create(:user).tap do |u|
+          allow(u).to receive(:groups) { ["faculty", "africana-faculty"] }
+        end
+      end
 
       before do
-        allow(user).to receive(:groups) { ["faculty", "africana-faculty"] }
-        subject.current_ability = Ability.new(user)
         subject.send(:apply_gated_discovery, @solr_parameters)
       end
 
@@ -67,7 +72,6 @@ describe Blacklight::AccessControls::Enforcement do
   describe "#except" do
     let(:user) { build(:user) }
     let(:ability) { Ability.new(user) }
-    before { search_builder.current_ability = ability }
     subject { search_builder.except('foo') }
 
     it "keeps the current_ability set" do
@@ -78,7 +82,6 @@ describe Blacklight::AccessControls::Enforcement do
   describe "#append" do
     let(:user) { build(:user) }
     let(:ability) { Ability.new(user) }
-    before { search_builder.current_ability = ability }
     subject { search_builder.append('foo') }
 
     it "keeps the current_ability set" do
@@ -87,23 +90,25 @@ describe Blacklight::AccessControls::Enforcement do
   end
 
   describe "apply_gated_discovery" do
-    let(:user) { create(:user) }
+    let(:user) do
+      create(:user).tap do |u|
+        allow(u).to receive(:groups) { groups }
+      end
+    end
     let(:groups) { ["archivist","researcher"] }
 
     before do
-      allow(user).to receive(:groups) { groups }
-      subject.current_ability = Ability.new(user)
       @solr_parameters = {}
     end
 
-    it "should set query fields for the user id checking against the discover, read fields" do
+    it "sets query fields for the user id checking against the discover, read fields" do
       subject.send(:apply_gated_discovery, @solr_parameters)
       ["discover","read"].each do |type|
         expect(@solr_parameters[:fq].first).to match(/#{type}_access_person_ssim\:#{user.user_key}/)
       end
     end
 
-    it "should set query fields for all roles the user is a member of checking against the discover, read fields" do
+    it "sets query fields for all roles the user is a member of checking against the discover, read fields" do
       subject.send(:apply_gated_discovery, @solr_parameters)
       ["discover","read"].each do |type|
         expect(@solr_parameters[:fq].first).to match(/#{type}_access_group_ssim\:archivist/)
@@ -150,21 +155,16 @@ describe Blacklight::AccessControls::Enforcement do
 
   describe "apply_user_permissions" do
     describe "when the user is a guest user (user key nil)" do
-      before { subject.current_ability = ability }
-
-      it "should not create filters" do
+      it "does not create filters" do
         expect(subject.send(:apply_user_permissions, ["discover","read"])).to eq []
       end
     end
 
     describe "when the user is a guest user (user key empty string)" do
       let(:user) { User.new(email: '') }
-      before { subject.current_ability = ability }
-
-      it "should not create filters" do
+      it "does not create filters" do
         expect(subject.send(:apply_user_permissions, ["discover","read"])).to eq []
       end
     end
   end
-
 end
