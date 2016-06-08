@@ -47,8 +47,8 @@ describe Blacklight::AccessControls::Enforcement do
       end
 
       it "searches for my groups" do
-        expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=discover_access_group_ssim\}public,faculty,africana\\-faculty,registered})
-        expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=read_access_group_ssim\}public,faculty,africana\\-faculty,registered})
+        expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=discover_access_group_ssim\}public,faculty,africana-faculty,registered})
+        expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=read_access_group_ssim\}public,faculty,africana-faculty,registered})
       end
 
       it "searches for my user key" do
@@ -106,27 +106,27 @@ describe Blacklight::AccessControls::Enforcement do
     context 'slashes in the group names' do
       let(:groups) { ["abc/123","cde/567"] }
 
-      it "should escape slashes" do
-        expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=discover_access_group_ssim\}public,abc\\/123,cde\\/567,registered})
-        expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=read_access_group_ssim\}public,abc\\/123,cde\\/567,registered})
+      it "doesn't escape slashes" do
+        expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=discover_access_group_ssim\}public,abc/123,cde/567,registered})
+        expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=read_access_group_ssim\}public,abc/123,cde/567,registered})
       end
     end
 
     context 'spaces in the group names' do
       let(:groups) { ["abc 123","cd/e 567"] }
 
-      it "escapes spaces in group names" do
-        expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=discover_access_group_ssim\}public,abc\\ 123,cd\\/e\\ 567,registered})
-        expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=read_access_group_ssim\}public,abc\\ 123,cd\\/e\\ 567,registered})
+      it "doesn't escape spaces in group names" do
+        expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=discover_access_group_ssim\}public,abc 123,cd/e 567,registered})
+        expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=read_access_group_ssim\}public,abc 123,cd/e 567,registered})
       end
     end
 
     context 'colons in the groups names' do
       let(:groups) { ["abc:123","cde:567"] }
 
-      it "should escape colons" do
-        expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=discover_access_group_ssim\}public,abc\\:123,cde\\:567,registered})
-        expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=read_access_group_ssim\}public,abc\\:123,cde\\:567,registered})
+      it "doesn't escape colons" do
+        expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=discover_access_group_ssim\}public,abc:123,cde:567,registered})
+        expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=read_access_group_ssim\}public,abc:123,cde:567,registered})
       end
     end
   end
