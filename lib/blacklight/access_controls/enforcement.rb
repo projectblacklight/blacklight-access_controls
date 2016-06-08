@@ -5,7 +5,10 @@ module Blacklight
       extend ActiveSupport::Concern
 
       included do
+        extend Deprecation
         attr_writer :current_ability
+        deprecation_deprecate :current_ability=
+
         class_attribute :solr_access_filters_logic
 
         # Set defaults. Each symbol identifies a _method_ that must be in
@@ -20,17 +23,7 @@ module Blacklight
         self.default_processor_chain += [:add_access_controls_to_solr_params] if respond_to?(:default_processor_chain)
       end
 
-      def current_ability
-        @current_ability || raise("current_ability has not been set on #{self}")
-      end
-
-      def except(*)
-        super.tap { |new_builder| new_builder.current_ability = current_ability }
-      end
-
-      def append(*)
-        super.tap { |new_builder| new_builder.current_ability = current_ability }
-      end
+      delegate :current_ability, to: :scope
 
       protected
 
