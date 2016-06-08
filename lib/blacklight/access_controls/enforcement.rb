@@ -70,7 +70,7 @@ module Blacklight
         # for groups
         permission_types.map do |type|
           field = solr_field_for(type, 'group')
-          groups = ability.user_groups.map { |g| escape_value(g) }
+          groups = ability.user_groups
           # The parens are required to properly OR the cases together.
           "({!terms f=#{field}}#{groups.join(',')})"
         end
