@@ -68,13 +68,12 @@ module Blacklight
 
       def apply_group_permissions(permission_types, ability = current_ability)
         # for groups
-        user_access_filters = []
-        ability.user_groups.each_with_index do |group, i|
-          permission_types.each do |type|
-            user_access_filters << escape_filter(solr_field_for(type, 'group'), group)
-          end
+        permission_types.map do |type|
+          field = solr_field_for(type, 'group')
+          groups = ability.user_groups.map { |g| escape_value(g) }
+          # The parens are required to properly OR the cases together.
+          "({!terms f=#{field}}#{groups.join(',')})"
         end
-        user_access_filters
       end
 
       def apply_user_permissions(permission_types, ability = current_ability)
@@ -97,9 +96,12 @@ module Blacklight
       end
 
       def escape_filter(key, value)
-        [key, value.gsub(/[ :\/]/, ' ' => '\ ', '/' => '\/', ':' => '\:')].join(':')
+        [key, escape_value(value)].join(':')
       end
 
+      def escape_value(value)
+        RSolr.solr_escape(value).gsub(/ /, '\ ')
+      end
     end
   end
 end
