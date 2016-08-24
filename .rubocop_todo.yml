@@ -9,25 +9,6 @@
 # Manually added to prevent `unrecognized cop` warnings during execution.
 require: rubocop-rspec
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: IgnoreEmptyBlocks, AllowUnusedKeywordArguments.
-Lint/UnusedBlockArgument:
-  Exclude:
-    - 'Rakefile'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods.
-Lint/UnusedMethodArgument:
-  Exclude:
-    - 'lib/blacklight/access_controls/catalog.rb'
-
-# Offense count: 2
-Lint/UselessAssignment:
-  Exclude:
-    - 'Rakefile'
-
 # Offense count: 4
 Metrics/AbcSize:
   Max: 18
