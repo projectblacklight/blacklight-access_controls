@@ -22,5 +22,4 @@ class TestAppGenerator < Rails::Generators::Base
   def run_access_controls_generator
     generate 'blacklight:access_controls'
   end
-
 end

@@ -131,7 +131,6 @@ describe Ability do
     end
   end
 
-
   describe "Given an asset to which a specific user has discovery access" do
     let(:user_with_access) { create(:user) }
     let(:asset) { SolrDocument.new(id: 'user_disco', discover_access_person_ssim: [user_with_access.email]) }
@@ -228,7 +227,6 @@ describe Ability do
     end
   end
 
-
   describe '.user_class' do
     subject { Blacklight::AccessControls::Ability.user_class }
     it { is_expected.to eq User }
@@ -258,7 +256,7 @@ describe Ability do
     end
 
     context 'a user with groups' do
-      let(:user) { double(groups: ['group1', 'group2'], new_record?: false) }
+      let(:user) { double(groups: %w(group1 group2), new_record?: false) }
       it { is_expected.to include('group1', 'group2') }
     end
   end
@@ -270,7 +268,7 @@ describe Ability do
     before do
       class MyAbility
         include Blacklight::AccessControls::Ability
-        self.ability_logic +=[:setup_my_permissions]
+        self.ability_logic += [:setup_my_permissions]
 
         def setup_my_permissions
           can :accept, SolrDocument
@@ -285,5 +283,4 @@ describe Ability do
     # Make sure it called the custom method
     it { should be_able_to(:accept, SolrDocument) }
   end
-
 end

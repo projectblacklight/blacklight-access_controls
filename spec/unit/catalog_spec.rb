@@ -6,7 +6,7 @@ describe Blacklight::AccessControls::Catalog do
 
   describe '#enforce_show_permissions' do
     subject { controller.send(:enforce_show_permissions) }
-    let(:params) {{ id: doc.id }}
+    let(:params) { { id: doc.id } }
 
     before do
       allow(controller).to receive(:current_user).and_return(user)
@@ -38,5 +38,4 @@ describe Blacklight::AccessControls::Catalog do
       end
     end
   end
-
 end

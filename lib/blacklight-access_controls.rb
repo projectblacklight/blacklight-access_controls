@@ -20,5 +20,4 @@ module Blacklight::AccessControls
   # This usually happens within a call to Enforcement#enforce_access_controls but can be
   # raised manually.
   class AccessDenied < ::CanCan::AccessDenied; end
-
 end

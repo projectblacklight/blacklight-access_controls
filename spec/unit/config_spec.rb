@@ -92,5 +92,4 @@ describe Blacklight::AccessControls::Config do
       expect(subject).to eq 'something else'
     end
   end
-
 end

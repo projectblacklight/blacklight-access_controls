@@ -2,7 +2,6 @@
 module Blacklight
   module AccessControls
     class Config
-
       def initialize
         @user_model = default_user_model
 
@@ -48,7 +47,6 @@ module Blacklight
       def default_download_user_field
         "download_access_person_ssim"
       end
-
     end
   end
 end

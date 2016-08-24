@@ -17,7 +17,7 @@ module Blacklight
         self.ability_logic = [:discover_permissions, :read_permissions, :download_permissions]
       end
 
-      def initialize(user, options={})
+      def initialize(user, options = {})
         @current_user = user || guest_user
         @options = options
         @cache = Blacklight::AccessControls::PermissionsCache.new
@@ -161,7 +161,6 @@ module Blacklight
       end
 
       module ClassMethods
-
         def discover_group_field
           Blacklight::AccessControls.config.discover_group_field
         end
@@ -185,7 +184,6 @@ module Blacklight
         def download_user_field
           Blacklight::AccessControls.config.download_user_field
         end
-
       end
     end
   end

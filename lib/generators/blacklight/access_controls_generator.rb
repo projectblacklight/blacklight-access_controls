@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 module Blacklight
   class AccessControlsGenerator < Rails::Generators::Base
-
     desc "This generator makes the following changes to your application:
 
 1. Includes Blacklight::AccessControls::User in the User class.
 2. Includes Blacklight::AccessControls::Enforcement in the SearchBuilder class.
 3. Adds access controls to CatalogController.
 4. Adds Ability class."
-
 
     source_root File.expand_path("..", __FILE__)
 
@@ -20,10 +18,9 @@ module Blacklight
       default: Array(File.join('app', 'models', 'search_builder.rb')),
       desc: "The path(s) to your search builder model(s)"
 
-
     def add_access_controls_to_user
       say_status('status', 'ADDING ACCESS CONTROLS TO USER MODEL', :yellow)
-      insert_into_file File.join('app','models', "#{options[:user_model].underscore}.rb"),
+      insert_into_file File.join('app', 'models', "#{options[:user_model].underscore}.rb"),
         "  include Blacklight::AccessControls::User\n\n",
         after: "include Blacklight::User\n"
     end
@@ -61,6 +58,5 @@ module Blacklight
       say_status('status', 'ADDING BLACKLIGHT ACCESS CONTROLS CONFIGURATION', :yellow)
       copy_file 'blacklight_access_controls.rb', 'config/initializers/blacklight_access_controls.rb'
     end
-
   end
 end

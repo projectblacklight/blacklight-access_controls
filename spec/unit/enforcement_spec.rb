@@ -52,7 +52,7 @@ describe Blacklight::AccessControls::Enforcement do
       end
 
       it "searches for my user key" do
-        ["discover","read"].each do |type|
+        %w(discover read).each do |type|
           expect(@solr_parameters[:fq].first).to match(/#{type}_access_person_ssim\:#{user.user_key}/)
         end
       end
@@ -85,7 +85,7 @@ describe Blacklight::AccessControls::Enforcement do
         allow(u).to receive(:groups) { groups }
       end
     end
-    let(:groups) { ["archivist","researcher"] }
+    let(:groups) { %w(archivist researcher) }
 
     before do
       @solr_parameters = {}
@@ -93,7 +93,7 @@ describe Blacklight::AccessControls::Enforcement do
     end
 
     it "sets query fields for the user id checking against the discover, read fields" do
-      ["discover","read"].each do |type|
+      %w(discover read).each do |type|
         expect(@solr_parameters[:fq].first).to match(/#{type}_access_person_ssim\:#{user.user_key}/)
       end
     end
@@ -104,7 +104,7 @@ describe Blacklight::AccessControls::Enforcement do
     end
 
     context 'slashes in the group names' do
-      let(:groups) { ["abc/123","cde/567"] }
+      let(:groups) { ["abc/123", "cde/567"] }
 
       it "doesn't escape slashes" do
         expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=discover_access_group_ssim\}public,abc/123,cde/567,registered})
@@ -113,7 +113,7 @@ describe Blacklight::AccessControls::Enforcement do
     end
 
     context 'spaces in the group names' do
-      let(:groups) { ["abc 123","cd/e 567"] }
+      let(:groups) { ["abc 123", "cd/e 567"] }
 
       it "doesn't escape spaces in group names" do
         expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=discover_access_group_ssim\}public,abc 123,cd/e 567,registered})
@@ -122,7 +122,7 @@ describe Blacklight::AccessControls::Enforcement do
     end
 
     context 'colons in the groups names' do
-      let(:groups) { ["abc:123","cde:567"] }
+      let(:groups) { ["abc:123", "cde:567"] }
 
       it "doesn't escape colons" do
         expect(@solr_parameters[:fq].first).to match(%r{\{!terms f=discover_access_group_ssim\}public,abc:123,cde:567,registered})
@@ -134,14 +134,14 @@ describe Blacklight::AccessControls::Enforcement do
   describe "apply_user_permissions" do
     describe "when the user is a guest user (user key nil)" do
       it "does not create filters" do
-        expect(subject.send(:apply_user_permissions, ["discover","read"])).to eq []
+        expect(subject.send(:apply_user_permissions, %w(discover read))).to eq []
       end
     end
 
     describe "when the user is a guest user (user key empty string)" do
       let(:user) { User.new(email: '') }
       it "does not create filters" do
-        expect(subject.send(:apply_user_permissions, ["discover","read"])).to eq []
+        expect(subject.send(:apply_user_permissions, %w(discover read))).to eq []
       end
     end
   end
