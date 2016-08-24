@@ -7,6 +7,7 @@ end
 
 Bundler::GemHelper.install_tasks
 
+require 'rubocop/rake_task'
 require 'solr_wrapper'
 require 'solr_wrapper/rake_task'
 require 'engine_cart/rake_task'
@@ -40,4 +41,10 @@ namespace :solr do
 end
 
 desc "Run CI build"
-task ci: ['engine_cart:generate', 'solr:spec']
+task ci: ['rubocop', 'engine_cart:generate', 'solr:spec']
+
+desc 'Run style checker'
+RuboCop::RakeTask.new(:rubocop) do |task|
+  task.requires << 'rubocop-rspec'
+  task.fail_on_error = true
+end
