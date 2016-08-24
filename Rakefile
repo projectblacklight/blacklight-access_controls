@@ -18,7 +18,7 @@ RSpec::Core::RakeTask.new(:spec)
 task default: 'ci'
 
 def solr_config_dir
-  File.join(File.expand_path(File.dirname(__FILE__)), "solr_conf", "conf")
+  File.join(File.expand_path(File.dirname(__FILE__)), 'solr_conf', 'conf')
 end
 
 namespace :solr do
@@ -30,7 +30,7 @@ namespace :solr do
     end
   end
 
-  desc "Run test suite (with solr wrapper)"
+  desc 'Run test suite (with solr wrapper)'
   task :spec do
     SolrWrapper.wrap do |solr|
       solr.with_collection(name: 'test', dir: solr_config_dir) do # |collection_name|
@@ -40,7 +40,7 @@ namespace :solr do
   end
 end
 
-desc "Run CI build"
+desc 'Run CI build'
 task ci: ['rubocop', 'engine_cart:generate', 'solr:spec']
 
 desc 'Run style checker'

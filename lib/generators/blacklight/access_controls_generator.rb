@@ -8,15 +8,15 @@ module Blacklight
 3. Adds access controls to CatalogController.
 4. Adds Ability class."
 
-    source_root File.expand_path("..", __FILE__)
+    source_root File.expand_path('..', __FILE__)
 
     class_option :user_model, aliases: '-m',
-      type: :string, default: 'User',
-      desc: "What is your user model called?"
+                              type: :string, default: 'User',
+                              desc: 'What is your user model called?'
 
     class_option :search_builders, aliases: '-b', type: :array,
-      default: Array(File.join('app', 'models', 'search_builder.rb')),
-      desc: "The path(s) to your search builder model(s)"
+                                   default: Array(File.join('app', 'models', 'search_builder.rb')),
+                                   desc: 'The path(s) to your search builder model(s)'
 
     def add_access_controls_to_user
       say_status('status', 'ADDING ACCESS CONTROLS TO USER MODEL', :yellow)

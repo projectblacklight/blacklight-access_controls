@@ -19,7 +19,7 @@ describe Blacklight::AccessControls::Config do
     subject { config.discover_group_field }
 
     it 'has a default value' do
-      expect(subject).to eq "discover_access_group_ssim"
+      expect(subject).to eq 'discover_access_group_ssim'
     end
 
     it 'can be set to a non-default value' do
@@ -32,7 +32,7 @@ describe Blacklight::AccessControls::Config do
     subject { config.discover_user_field }
 
     it 'has a default value' do
-      expect(subject).to eq "discover_access_person_ssim"
+      expect(subject).to eq 'discover_access_person_ssim'
     end
 
     it 'can be set to a non-default value' do
@@ -45,7 +45,7 @@ describe Blacklight::AccessControls::Config do
     subject { config.read_group_field }
 
     it 'has a default value' do
-      expect(subject).to eq "read_access_group_ssim"
+      expect(subject).to eq 'read_access_group_ssim'
     end
 
     it 'can be set to a non-default value' do
@@ -58,7 +58,7 @@ describe Blacklight::AccessControls::Config do
     subject { config.read_user_field }
 
     it 'has a default value' do
-      expect(subject).to eq "read_access_person_ssim"
+      expect(subject).to eq 'read_access_person_ssim'
     end
 
     it 'can be set to a non-default value' do
@@ -71,7 +71,7 @@ describe Blacklight::AccessControls::Config do
     subject { config.download_group_field }
 
     it 'has a default value' do
-      expect(subject).to eq "download_access_group_ssim"
+      expect(subject).to eq 'download_access_group_ssim'
     end
 
     it 'can be set to a non-default value' do
@@ -84,7 +84,7 @@ describe Blacklight::AccessControls::Config do
     subject { config.download_user_field }
 
     it 'has a default value' do
-      expect(subject).to eq "download_access_person_ssim"
+      expect(subject).to eq 'download_access_person_ssim'
     end
 
     it 'can be set to a non-default value' do

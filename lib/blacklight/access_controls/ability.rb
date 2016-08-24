@@ -36,8 +36,8 @@ module Blacklight
       end
 
       def grant_permissions
-        Rails.logger.debug("Usergroups are " + user_groups.inspect)
-        self.ability_logic.each do |method|
+        Rails.logger.debug('Usergroups are ' + user_groups.inspect)
+        ability_logic.each do |method|
           send(method)
         end
       end

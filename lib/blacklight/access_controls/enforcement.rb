@@ -63,7 +63,7 @@ module Blacklight
       # @param solr_parameters the current solr parameters
       def apply_gated_discovery(solr_parameters)
         solr_parameters[:fq] ||= []
-        solr_parameters[:fq] << gated_discovery_filters.join(" OR ")
+        solr_parameters[:fq] << gated_discovery_filters.join(' OR ')
         Rails.logger.debug("Solr parameters: #{solr_parameters.inspect}")
       end
 

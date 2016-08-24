@@ -84,23 +84,6 @@ RSpec/VerifiedDoubles:
   Exclude:
     - 'spec/unit/ability_spec.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: prefer_alias, prefer_alias_method
-Style/Alias:
-  Exclude:
-    - 'lib/blacklight-access_controls.rb'
-
-# Offense count: 7
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedHashRocketStyle, EnforcedColonStyle, EnforcedLastArgumentHashStyle, SupportedLastArgumentHashStyles.
-# SupportedLastArgumentHashStyles: always_inspect, always_ignore, ignore_implicit, ignore_explicit
-Style/AlignHash:
-  Exclude:
-    - 'lib/generators/blacklight/access_controls_generator.rb'
-    - 'spec/unit/ability_spec.rb'
-
 # Offense count: 5
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.
@@ -160,30 +143,9 @@ Style/FileName:
 
 # Offense count: 3
 # Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, UseHashRocketsWithSymbolValues, PreferHashRocketsForNonAlnumEndingSymbols.
-# SupportedStyles: ruby19, ruby19_no_mixed_keys, hash_rockets
-Style/HashSyntax:
-  Exclude:
-    - 'lib/blacklight/access_controls/permissions_query.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
 Style/MultilineBlockLayout:
   Exclude:
     - 'spec/unit/ability_spec.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: SupportedStyles.
-# SupportedStyles: compact, exploded
-Style/RaiseArgs:
-  EnforcedStyle: compact
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/RedundantSelf:
-  Exclude:
-    - 'lib/blacklight/access_controls/ability.rb'
 
 # Offense count: 6
 # Cop supports --auto-correct.
@@ -191,22 +153,4 @@ Style/RedundantSelf:
 # SupportedStyles: slashes, percent_r, mixed
 Style/RegexpLiteral:
   Exclude:
-    - 'spec/unit/enforcement_spec.rb'
-
-# Offense count: 86
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Exclude:
-    - 'Rakefile'
-    - 'lib/blacklight/access_controls/ability.rb'
-    - 'lib/blacklight/access_controls/catalog.rb'
-    - 'lib/blacklight/access_controls/config.rb'
-    - 'lib/blacklight/access_controls/enforcement.rb'
-    - 'lib/blacklight/access_controls/permissions_query.rb'
-    - 'lib/generators/blacklight/access_controls_generator.rb'
-    - 'spec/test_app_templates/lib/generators/test_app_generator.rb'
-    - 'spec/unit/ability_spec.rb'
-    - 'spec/unit/config_spec.rb'
     - 'spec/unit/enforcement_spec.rb'

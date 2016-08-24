@@ -13,7 +13,7 @@ module Blacklight::AccessControls
       yield @config if block_given?
       @config
     end
-    alias :config :configure
+    alias config configure
   end
 
   # This error is raised when a user isn't allowed to access a given controller action.
