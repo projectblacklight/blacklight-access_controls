@@ -52,9 +52,10 @@ module Blacklight
       # Which permission levels (logical OR) will grant you the ability to discover documents in a search.
       # Override this method if you want it to be something other than the default
       def discovery_permissions
-        @discovery_permissions ||= ["discover","read"]
+        @discovery_permissions ||= %w(discover read)
       end
-      def discovery_permissions= (permissions)
+
+      def discovery_permissions=(permissions)
         @discovery_permissions = permissions
       end
 
@@ -62,8 +63,8 @@ module Blacklight
       # @param solr_parameters the current solr parameters
       def apply_gated_discovery(solr_parameters)
         solr_parameters[:fq] ||= []
-        solr_parameters[:fq] << gated_discovery_filters.join(" OR ")
-        Rails.logger.debug("Solr parameters: #{ solr_parameters.inspect }")
+        solr_parameters[:fq] << gated_discovery_filters.join(' OR ')
+        Rails.logger.debug("Solr parameters: #{solr_parameters.inspect}")
       end
 
       def apply_group_permissions(permission_types, ability = current_ability)

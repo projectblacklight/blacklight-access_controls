@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 class Blacklight::AccessControls::PermissionsCache
-
   def initialize
-    clear 
+    clear
   end
 
   def get(pid)
@@ -10,11 +9,10 @@ class Blacklight::AccessControls::PermissionsCache
   end
 
   def put(pid, doc)
-    @cache[pid] = doc 
+    @cache[pid] = doc
   end
 
   def clear
     @cache = {}
   end
-
 end

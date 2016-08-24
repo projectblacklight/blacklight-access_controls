@@ -18,7 +18,6 @@ module Blacklight
       def user_key
         send(Devise.authentication_keys.first)
       end
-
     end
   end
 end

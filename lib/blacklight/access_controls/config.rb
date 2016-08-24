@@ -2,7 +2,6 @@
 module Blacklight
   module AccessControls
     class Config
-
       def initialize
         @user_model = default_user_model
 
@@ -26,29 +25,28 @@ module Blacklight
       end
 
       def default_discover_group_field
-        "discover_access_group_ssim"
+        'discover_access_group_ssim'
       end
 
       def default_discover_user_field
-        "discover_access_person_ssim"
+        'discover_access_person_ssim'
       end
 
       def default_read_group_field
-        "read_access_group_ssim"
+        'read_access_group_ssim'
       end
 
       def default_read_user_field
-        "read_access_person_ssim"
+        'read_access_person_ssim'
       end
 
       def default_download_group_field
-        "download_access_group_ssim"
+        'download_access_group_ssim'
       end
 
       def default_download_user_field
-        "download_access_person_ssim"
+        'download_access_person_ssim'
       end
-
     end
   end
 end

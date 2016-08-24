@@ -5,7 +5,7 @@ require 'cancan/matchers'
 describe Ability do
   let(:ability) { Ability.new(user) }
 
-  describe "class methods" do
+  describe 'class methods' do
     it 'has keys for access control fields' do
       expect(Ability.read_group_field).to eq 'read_access_group_ssim'
       expect(Ability.read_user_field).to eq 'read_access_person_ssim'
@@ -16,11 +16,11 @@ describe Ability do
     end
   end
 
-  describe "Given an asset that has been made publicly discoverable" do
+  describe 'Given an asset that has been made publicly discoverable' do
     let(:asset) { SolrDocument.new(id: 'public_discovery',
-                  discover_access_group_ssim: ['public']) }
+                                   discover_access_group_ssim: ['public']) }
 
-    context "Then a not-signed-in user" do
+    context 'Then a not-signed-in user' do
       let(:user) { nil }
       subject { ability }
 
@@ -29,7 +29,7 @@ describe Ability do
       it { should_not be_able_to(:download, asset) }
     end
 
-    context "Then a registered user" do
+    context 'Then a registered user' do
       let(:user) { create(:user) }
       subject { ability }
 
@@ -54,11 +54,11 @@ describe Ability do
     end
   end
 
-  describe "Given an asset that has been made publicly readable" do
+  describe 'Given an asset that has been made publicly readable' do
     let(:asset) { SolrDocument.new(id: 'public_read',
-                  read_access_group_ssim: ['public']) }
+                                   read_access_group_ssim: ['public']) }
 
-    context "Then a not-signed-in user" do
+    context 'Then a not-signed-in user' do
       let(:user) { nil }
       subject { ability }
 
@@ -67,7 +67,7 @@ describe Ability do
       it { should_not be_able_to(:download, asset) }
     end
 
-    context "Then a registered user" do
+    context 'Then a registered user' do
       let(:user) { create(:user) }
       subject { ability }
 
@@ -92,12 +92,12 @@ describe Ability do
     end
   end
 
-  describe "Given an asset that has been made publicly downloadable" do
+  describe 'Given an asset that has been made publicly downloadable' do
     let(:id) { 'public_download' }
     let(:asset) { SolrDocument.new(id: id,
-                    download_access_group_ssim: ['public']) }
+                                   download_access_group_ssim: ['public']) }
 
-    context "Then a not-signed-in user" do
+    context 'Then a not-signed-in user' do
       let(:user) { nil }
       subject { ability }
 
@@ -106,7 +106,7 @@ describe Ability do
       it { should be_able_to(:download, asset) }
     end
 
-    context "Then a registered user" do
+    context 'Then a registered user' do
       let(:user) { create(:user) }
       subject { ability }
 
@@ -131,12 +131,11 @@ describe Ability do
     end
   end
 
-
-  describe "Given an asset to which a specific user has discovery access" do
+  describe 'Given an asset to which a specific user has discovery access' do
     let(:user_with_access) { create(:user) }
     let(:asset) { SolrDocument.new(id: 'user_disco', discover_access_person_ssim: [user_with_access.email]) }
 
-    context "Then a not-signed-in user" do
+    context 'Then a not-signed-in user' do
       let(:user) { nil }
       subject { ability }
 
@@ -145,7 +144,7 @@ describe Ability do
       it { should_not be_able_to(:download, asset) }
     end
 
-    context "Then a different registered user" do
+    context 'Then a different registered user' do
       let(:user) { create(:user) }
       subject { ability }
 
@@ -154,7 +153,7 @@ describe Ability do
       it { should_not be_able_to(:download, asset) }
     end
 
-    context "Then that user" do
+    context 'Then that user' do
       let(:user) { user_with_access }
       subject { ability }
 
@@ -164,11 +163,11 @@ describe Ability do
     end
   end
 
-  describe "Given an asset to which a specific user has read access" do
+  describe 'Given an asset to which a specific user has read access' do
     let(:user_with_access) { create(:user) }
     let(:asset) { SolrDocument.new(id: 'user_read', read_access_person_ssim: [user_with_access.email]) }
 
-    context "Then a not-signed-in user" do
+    context 'Then a not-signed-in user' do
       let(:user) { nil }
       subject { ability }
 
@@ -177,7 +176,7 @@ describe Ability do
       it { should_not be_able_to(:download, asset) }
     end
 
-    context "Then a different registered user" do
+    context 'Then a different registered user' do
       let(:user) { create(:user) }
       subject { ability }
 
@@ -186,7 +185,7 @@ describe Ability do
       it { should_not be_able_to(:download, asset) }
     end
 
-    context "Then that user" do
+    context 'Then that user' do
       let(:user) { user_with_access }
       subject { ability }
 
@@ -196,11 +195,11 @@ describe Ability do
     end
   end
 
-  describe "Given an asset to which a specific user has download access" do
+  describe 'Given an asset to which a specific user has download access' do
     let(:user_with_access) { create(:user) }
     let(:asset) { SolrDocument.new(id: 'user_read', download_access_person_ssim: [user_with_access.email]) }
 
-    context "Then a not-signed-in user" do
+    context 'Then a not-signed-in user' do
       let(:user) { nil }
       subject { ability }
 
@@ -209,7 +208,7 @@ describe Ability do
       it { should_not be_able_to(:download, asset) }
     end
 
-    context "Then a different registered user" do
+    context 'Then a different registered user' do
       let(:user) { create(:user) }
       subject { ability }
 
@@ -218,7 +217,7 @@ describe Ability do
       it { should_not be_able_to(:download, asset) }
     end
 
-    context "Then that user" do
+    context 'Then that user' do
       let(:user) { user_with_access }
       subject { ability }
 
@@ -227,7 +226,6 @@ describe Ability do
       it { should be_able_to(:download, asset) }
     end
   end
-
 
   describe '.user_class' do
     subject { Blacklight::AccessControls::Ability.user_class }
@@ -258,19 +256,19 @@ describe Ability do
     end
 
     context 'a user with groups' do
-      let(:user) { double(groups: ['group1', 'group2'], new_record?: false) }
+      let(:user) { double(groups: %w(group1 group2), new_record?: false) }
       it { is_expected.to include('group1', 'group2') }
     end
   end
 
-  describe "with a custom method" do
+  describe 'with a custom method' do
     let(:user) { create(:user) }
     subject { MyAbility.new(user) }
 
     before do
       class MyAbility
         include Blacklight::AccessControls::Ability
-        self.ability_logic +=[:setup_my_permissions]
+        self.ability_logic += [:setup_my_permissions]
 
         def setup_my_permissions
           can :accept, SolrDocument
@@ -285,5 +283,4 @@ describe Ability do
     # Make sure it called the custom method
     it { should be_able_to(:accept, SolrDocument) }
   end
-
 end

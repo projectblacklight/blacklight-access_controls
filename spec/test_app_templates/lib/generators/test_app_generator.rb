@@ -2,7 +2,7 @@
 require 'rails/generators'
 
 class TestAppGenerator < Rails::Generators::Base
-  source_root File.expand_path("../../../../spec/test_app_templates", __FILE__)
+  source_root File.expand_path('../../../../spec/test_app_templates', __FILE__)
 
   # if you need to generate any additional configuration
   # into the test app, this generator will be run immediately
@@ -10,7 +10,7 @@ class TestAppGenerator < Rails::Generators::Base
 
   def generate_blacklight
     say_status('status', 'GENERATING BLACKLIGHT', :yellow)
-    generate "blacklight:install", "--devise"
+    generate 'blacklight:install', '--devise'
   end
 
   def configure_blacklight
@@ -22,5 +22,4 @@ class TestAppGenerator < Rails::Generators::Base
   def run_access_controls_generator
     generate 'blacklight:access_controls'
   end
-
 end

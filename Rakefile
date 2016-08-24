@@ -7,6 +7,7 @@ end
 
 Bundler::GemHelper.install_tasks
 
+require 'rubocop/rake_task'
 require 'solr_wrapper'
 require 'solr_wrapper/rake_task'
 require 'engine_cart/rake_task'
@@ -17,27 +18,33 @@ RSpec::Core::RakeTask.new(:spec)
 task default: 'ci'
 
 def solr_config_dir
-  File.join(File.expand_path(File.dirname(__FILE__)), "solr_conf", "conf")
+  File.join(File.expand_path(File.dirname(__FILE__)), 'solr_conf', 'conf')
 end
 
 namespace :solr do
   desc 'Configure solr cores'
   task :config do
     SolrWrapper.wrap do |solr|
-      core = solr.create(name: 'development', dir: solr_config_dir)
-      core = solr.create(name: 'test', dir: solr_config_dir)
+      solr.create(name: 'development', dir: solr_config_dir)
+      solr.create(name: 'test', dir: solr_config_dir)
     end
   end
 
-  desc "Run test suite (with solr wrapper)"
+  desc 'Run test suite (with solr wrapper)'
   task :spec do
     SolrWrapper.wrap do |solr|
-      solr.with_collection(name:'test', dir: solr_config_dir) do |collection_name|
+      solr.with_collection(name: 'test', dir: solr_config_dir) do # |collection_name|
         Rake::Task['spec'].invoke
       end
     end
   end
 end
 
-desc "Run CI build"
-task ci: ['engine_cart:generate', 'solr:spec']
+desc 'Run CI build'
+task ci: ['rubocop', 'engine_cart:generate', 'solr:spec']
+
+desc 'Run style checker'
+RuboCop::RakeTask.new(:rubocop) do |task|
+  task.requires << 'rubocop-rspec'
+  task.fail_on_error = true
+end
