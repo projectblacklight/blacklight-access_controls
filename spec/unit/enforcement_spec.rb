@@ -1,6 +1,4 @@
 # frozen_string_literal: true
-require 'spec_helper'
-
 describe Blacklight::AccessControls::Enforcement do
   let(:controller) { CatalogController.new }
   let(:search_builder) { SearchBuilder.new(method_chain, context) }

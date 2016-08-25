@@ -1,6 +1,4 @@
 # frozen_string_literal: true
-require 'spec_helper'
-
 describe Blacklight::AccessControls::Config do
   let(:config) { described_class.new }
 
