@@ -41,7 +41,7 @@ module Blacklight
   include Blacklight::AccessControls::Catalog
 
   # Apply the blacklight-access_controls
-  before_filter :enforce_show_permissions, only: :show
+  before_action :enforce_show_permissions, only: :show
 
       EOS
 
