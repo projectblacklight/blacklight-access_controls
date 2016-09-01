@@ -40,7 +40,7 @@ module Blacklight
       # Grant access based on user id & group
       # @return [Array{Array{String}}]
       def gated_discovery_filters(permission_types = discovery_permissions, ability = current_ability)
-        solr_access_filters_logic.map { |method| send(method, permission_types, ability).reject(&:blank?) }
+        solr_access_filters_logic.map { |method| send(method, permission_types, ability).reject(&:blank?) }.reject(&:empty?)
       end
 
       ### Solr query modifications
