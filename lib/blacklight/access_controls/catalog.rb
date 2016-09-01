@@ -1,13 +1,11 @@
 # frozen_string_literal: true
-# This is behavior for the catalog controller.
-
 module Blacklight
   module AccessControls
+    # This is behavior for the catalog controller.
     module Catalog
       extend ActiveSupport::Concern
 
-      # Controller "before" filter for enforcing access controls
-      # on show actions.
+      # Controller "before" filter for enforcing access controls on show actions.
       # @param [Hash] _opts (optional, not currently used)
       def enforce_show_permissions(_opts = {})
         permissions = current_ability.permissions_doc(params[:id])

@@ -1,15 +1,29 @@
 # frozen_string_literal: true
+class MyController # < ApplicationController
+  include Blacklight::AccessControls::Enforcement
+end
+
 describe Blacklight::AccessControls::Enforcement do
-  let(:controller) { CatalogController.new }
-  let(:search_builder) { SearchBuilder.new(method_chain, controller) }
-  let(:method_chain) { SearchBuilder.default_processor_chain }
+  let(:controller) do
+    c = MyController.new
+    allow(c).to receive(:current_ability).and_return(ability)
+    c
+  end
   let(:user) { User.new }
   let(:ability) { Ability.new(user) }
+  subject { controller }
 
-  subject { search_builder }
+  describe '#discovery_permissions' do
+    it 'has defaults' do
+      expect(subject.discovery_permissions).to eq %w(discover read)
+    end
 
-  before do
-    allow(controller).to receive(:current_ability).and_return(ability)
+    it 'does getter/setter' do
+      subject.discovery_permissions = %w(discover read frobnicate)
+      expect(subject.discovery_permissions).to eq %w(discover read frobnicate)
+      subject.discovery_permissions << 'zazzo'
+      expect(subject.discovery_permissions).to eq %w(discover read frobnicate zazzo)
+    end
   end
 
   describe '#apply_gated_discovery' do
@@ -19,10 +33,21 @@ describe Blacklight::AccessControls::Enforcement do
       solr_parameters[:fq].first
     end
 
+    # rubocop:disable RSpec/MessageExpectation
+    describe 'logger' do
+      # Expectation will be triggered by Ability class (that calls Rails.logger.debug earlier). So we double Ability to avoid false positive.
+      let(:ability) { instance_double(Ability, user_groups: [], current_user: user) }
+      it 'is called with debug' do
+        expect(Rails.logger).to receive(:debug).with(/^Solr parameters/)
+        controller.send(:apply_gated_discovery, {})
+      end
+    end
+
     context 'Given I am not logged in' do
       it "Then I should be treated as a member of the 'public' group" do
         expect(fq_first).to eq '({!terms f=discover_access_group_ssim}public) OR ({!terms f=read_access_group_ssim}public)'
       end
+
       it "Then I should not be treated as a member of the 'registered' group" do
         expect(fq_first).to_not match(/registered/)
       end
@@ -44,6 +69,11 @@ describe Blacklight::AccessControls::Enforcement do
       it 'searches for my groups' do
         expect(fq_first).to match(%r{\{!terms f=discover_access_group_ssim\}public,faculty,africana-faculty,registered})
         expect(fq_first).to match(%r{\{!terms f=read_access_group_ssim\}public,faculty,africana-faculty,registered})
+      end
+
+      it 'does not build empty clauses' do
+        expect(controller).to receive(:apply_user_permissions).and_return(['({!terms f=discover_access_group_ssim}public,faculty,africana-faculty,registered)', '', nil])
+        expect(fq_first).not_to match(/ OR $/) # i.e. doesn't end w/ empty
       end
 
       context 'slashes in the group names' do
@@ -72,24 +102,6 @@ describe Blacklight::AccessControls::Enforcement do
           expect(fq_first).to match(%r{\{!terms f=read_access_group_ssim\}public,abc:123,cde:567,registered})
         end
       end
-    end
-  end
-
-  describe '#except' do
-    let(:user) { build(:user) }
-    subject { search_builder.except('foo') }
-
-    it 'keeps the current_ability set' do
-      expect(subject.current_ability).to eq ability
-    end
-  end
-
-  describe '#append' do
-    let(:user) { build(:user) }
-    subject { search_builder.append('foo') }
-
-    it 'keeps the current_ability set' do
-      expect(subject.current_ability).to eq ability
     end
   end
 
