@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 ENV['RAILS_ENV'] ||= 'test'
 
-require 'blacklight-access_controls'
 require 'engine_cart'
 EngineCart.load_application!
+
+require 'blacklight-access_controls'
 
 require 'factory_girl_rails'
 require 'database_cleaner'
