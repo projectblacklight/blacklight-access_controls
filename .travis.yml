@@ -1,23 +1,15 @@
 language: ruby
 sudo: false
-cache:
-  directories:
-  - /tmp/solr-5.3.0
 
 notifications:
   email: false
 
 rvm:
-  - 2.3.0
+  - 2.3.1
 
 env:
  - "RAILS_VERSION=4.2.7.1"
  - "RAILS_VERSION=5.0.0.1"
-
-notifications:
-  irc: "irc.freenode.org#blacklight"
-  email:
-      - blacklight-commits@googlegroups.com
 
 global_env:
   - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
