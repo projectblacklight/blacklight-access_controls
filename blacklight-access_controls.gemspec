@@ -21,9 +21,9 @@ Gem::Specification.new do |gem|
   gem.add_dependency "blacklight", '~> 6.0'
   gem.add_dependency "deprecation", '~> 1.0'
 
-  gem.add_development_dependency "rake", '~> 10.1'
+  gem.add_development_dependency "rake", '~> 11.3'
   gem.add_development_dependency 'rspec', '~> 3.1'
-  gem.add_development_dependency "engine_cart", "~> 0.8"
+  gem.add_development_dependency "engine_cart", "~> 1.0"
   gem.add_development_dependency "solr_wrapper"
   gem.add_development_dependency "factory_girl_rails", "~> 4.0"
   gem.add_development_dependency "database_cleaner"

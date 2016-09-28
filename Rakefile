@@ -22,18 +22,10 @@ def solr_config_dir
 end
 
 namespace :solr do
-  desc 'Configure solr cores'
-  task :config do
-    SolrWrapper.wrap do |solr|
-      solr.create(name: 'development', dir: solr_config_dir)
-      solr.create(name: 'test', dir: solr_config_dir)
-    end
-  end
-
   desc 'Run test suite (with solr wrapper)'
   task :spec do
     SolrWrapper.wrap do |solr|
-      solr.with_collection(name: 'test', dir: solr_config_dir) do # |collection_name|
+      solr.with_collection(name: 'blacklight-core', dir: solr_config_dir) do # |collection_name|
         Rake::Task['spec'].invoke
       end
     end
