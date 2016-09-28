@@ -11,7 +11,8 @@ rvm:
   - 2.3.0
 
 env:
- - "RAILS_VERSION=4.2.5"
+ - "RAILS_VERSION=4.2.7.1"
+ - "RAILS_VERSION=5.0.0.1"
 
 notifications:
   irc: "irc.freenode.org#blacklight"
