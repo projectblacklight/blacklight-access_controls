@@ -27,10 +27,10 @@ module Blacklight::AccessControls
       raise Blacklight::Exceptions::InvalidSolrID, 'The application is trying to retrieve permissions without specifying an asset id' if id.nil?
       solr_opts = permissions_solr_doc_params(id).merge(extra_controller_params)
       response = Blacklight.default_index.connection.get('select', params: solr_opts)
-      solr_response = Blacklight::Solr::Response.new(response, solr_opts)
+      solr_response = Blacklight::Solr::Response.new(response, solr_opts, document_model: permissions_document_class)
 
       raise Blacklight::Exceptions::InvalidSolrID, "The solr permissions search handler didn't return anything for id \"#{id}\"" if solr_response.docs.empty?
-      permissions_document_class.new(solr_response.docs.first, solr_response)
+      solr_response.docs.first
     end
 
     #
