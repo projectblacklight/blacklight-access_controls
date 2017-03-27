@@ -8,8 +8,28 @@ AllCops:
   Exclude:
     - '.internal_test_app/**/*'
 
+Bundler/DuplicatedGem:
+  Enabled: false
+
+Style/FileName:
+  Exclude:
+    - 'Gemfile'
+    - 'blacklight-access_controls.gemspec'
+    - 'lib/blacklight-access_controls.rb'
+
+Style/MixinGrouping:
+  Enabled: false # pending fix of https://github.com/bbatsov/rubocop/issues/4172
+
 Rails:
   Enabled: true
 
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
 Metrics/LineLength:
   Max: 185
+
+RSpec/MessageSpies:
+  Enabled: false
+  

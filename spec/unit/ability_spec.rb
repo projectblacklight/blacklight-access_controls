@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'cancan/matchers'
 
 describe Ability do
@@ -21,35 +22,37 @@ describe Ability do
 
     context 'Then a not-signed-in user' do
       let(:user) { nil }
+
       subject { ability }
 
-      it { should     be_able_to(:discover, asset) }
-      it { should_not be_able_to(:read, asset) }
-      it { should_not be_able_to(:download, asset) }
+      it { is_expected.to     be_able_to(:discover, asset) }
+      it { is_expected.not_to be_able_to(:read, asset) }
+      it { is_expected.not_to be_able_to(:download, asset) }
     end
 
     context 'Then a registered user' do
       let(:user) { create(:user) }
+
       subject { ability }
 
-      it { should     be_able_to(:discover, asset) }
-      it { should_not be_able_to(:read, asset) }
-      it { should_not be_able_to(:download, asset) }
+      it { is_expected.to     be_able_to(:discover, asset) }
+      it { is_expected.not_to be_able_to(:read, asset) }
+      it { is_expected.not_to be_able_to(:download, asset) }
     end
 
     context 'With an ID instead of a SolrDocument' do
-      let(:user) { create(:user) }
       subject { ability }
 
+      let(:user) { create(:user) }
       let(:asset) {
         create_solr_doc(id: 'public_discovery',
                         discover_access_group_ssim: ['public'])
       }
 
       # It should still work, even if we just pass in an ID
-      it { should     be_able_to(:discover, asset.id) }
-      it { should_not be_able_to(:read, asset.id) }
-      it { should_not be_able_to(:download, asset.id) }
+      it { is_expected.to     be_able_to(:discover, asset.id) }
+      it { is_expected.not_to be_able_to(:read, asset.id) }
+      it { is_expected.not_to be_able_to(:download, asset.id) }
     end
   end
 
@@ -59,35 +62,37 @@ describe Ability do
 
     context 'Then a not-signed-in user' do
       let(:user) { nil }
+
       subject { ability }
 
-      it { should     be_able_to(:discover, asset) }
-      it { should     be_able_to(:read, asset) }
-      it { should_not be_able_to(:download, asset) }
+      it { is_expected.to     be_able_to(:discover, asset) }
+      it { is_expected.to     be_able_to(:read, asset) }
+      it { is_expected.not_to be_able_to(:download, asset) }
     end
 
     context 'Then a registered user' do
       let(:user) { create(:user) }
+
       subject { ability }
 
-      it { should     be_able_to(:discover, asset) }
-      it { should     be_able_to(:read, asset) }
-      it { should_not be_able_to(:download, asset) }
+      it { is_expected.to     be_able_to(:discover, asset) }
+      it { is_expected.to     be_able_to(:read, asset) }
+      it { is_expected.not_to be_able_to(:download, asset) }
     end
 
     context 'With an ID instead of a SolrDocument' do
-      let(:user) { create(:user) }
       subject { ability }
 
+      let(:user) { create(:user) }
       let(:asset) {
         create_solr_doc(id: 'public_read',
                         read_access_group_ssim: ['public'])
       }
 
       # It should still work, even if we just pass in an ID
-      it { should     be_able_to(:discover, asset.id) }
-      it { should     be_able_to(:read, asset.id) }
-      it { should_not be_able_to(:download, asset.id) }
+      it { is_expected.to     be_able_to(:discover, asset.id) }
+      it { is_expected.to     be_able_to(:read, asset.id) }
+      it { is_expected.not_to be_able_to(:download, asset.id) }
     end
   end
 
@@ -98,35 +103,37 @@ describe Ability do
 
     context 'Then a not-signed-in user' do
       let(:user) { nil }
+
       subject { ability }
 
-      it { should be_able_to(:discover, asset) }
-      it { should be_able_to(:read, asset) }
-      it { should be_able_to(:download, asset) }
+      it { is_expected.to be_able_to(:discover, asset) }
+      it { is_expected.to be_able_to(:read, asset) }
+      it { is_expected.to be_able_to(:download, asset) }
     end
 
     context 'Then a registered user' do
-      let(:user) { create(:user) }
       subject { ability }
 
-      it { should be_able_to(:discover, asset) }
-      it { should be_able_to(:read, asset) }
-      it { should be_able_to(:download, asset) }
+      let(:user) { create(:user) }
+
+      it { is_expected.to be_able_to(:discover, asset) }
+      it { is_expected.to be_able_to(:read, asset) }
+      it { is_expected.to be_able_to(:download, asset) }
     end
 
     context 'With an ID instead of a record' do
-      let(:user) { create(:user) }
       subject { ability }
 
+      let(:user) { create(:user) }
       let(:asset) {
         create_solr_doc(id: id,
                         download_access_group_ssim: ['public'])
       }
 
       # It should still work, even if we just pass in an ID
-      it { should be_able_to(:discover, asset.id) }
-      it { should be_able_to(:read, asset.id) }
-      it { should be_able_to(:download, asset.id) }
+      it { is_expected.to be_able_to(:discover, asset.id) }
+      it { is_expected.to be_able_to(:read, asset.id) }
+      it { is_expected.to be_able_to(:download, asset.id) }
     end
   end
 
@@ -136,29 +143,32 @@ describe Ability do
 
     context 'Then a not-signed-in user' do
       let(:user) { nil }
+
       subject { ability }
 
-      it { should_not be_able_to(:discover, asset) }
-      it { should_not be_able_to(:read, asset) }
-      it { should_not be_able_to(:download, asset) }
+      it { is_expected.not_to be_able_to(:discover, asset) }
+      it { is_expected.not_to be_able_to(:read, asset) }
+      it { is_expected.not_to be_able_to(:download, asset) }
     end
 
     context 'Then a different registered user' do
       let(:user) { create(:user) }
+
       subject { ability }
 
-      it { should_not be_able_to(:discover, asset) }
-      it { should_not be_able_to(:read, asset) }
-      it { should_not be_able_to(:download, asset) }
+      it { is_expected.not_to be_able_to(:discover, asset) }
+      it { is_expected.not_to be_able_to(:read, asset) }
+      it { is_expected.not_to be_able_to(:download, asset) }
     end
 
     context 'Then that user' do
       let(:user) { user_with_access }
+
       subject { ability }
 
-      it { should     be_able_to(:discover, asset) }
-      it { should_not be_able_to(:read, asset) }
-      it { should_not be_able_to(:download, asset) }
+      it { is_expected.to     be_able_to(:discover, asset) }
+      it { is_expected.not_to be_able_to(:read, asset) }
+      it { is_expected.not_to be_able_to(:download, asset) }
     end
   end
 
@@ -168,29 +178,32 @@ describe Ability do
 
     context 'Then a not-signed-in user' do
       let(:user) { nil }
+
       subject { ability }
 
-      it { should_not be_able_to(:discover, asset) }
-      it { should_not be_able_to(:read, asset) }
-      it { should_not be_able_to(:download, asset) }
+      it { is_expected.not_to be_able_to(:discover, asset) }
+      it { is_expected.not_to be_able_to(:read, asset) }
+      it { is_expected.not_to be_able_to(:download, asset) }
     end
 
     context 'Then a different registered user' do
       let(:user) { create(:user) }
+
       subject { ability }
 
-      it { should_not be_able_to(:discover, asset) }
-      it { should_not be_able_to(:read, asset) }
-      it { should_not be_able_to(:download, asset) }
+      it { is_expected.not_to be_able_to(:discover, asset) }
+      it { is_expected.not_to be_able_to(:read, asset) }
+      it { is_expected.not_to be_able_to(:download, asset) }
     end
 
     context 'Then that user' do
       let(:user) { user_with_access }
+
       subject { ability }
 
-      it { should     be_able_to(:discover, asset) }
-      it { should     be_able_to(:read, asset) }
-      it { should_not be_able_to(:download, asset) }
+      it { is_expected.to     be_able_to(:discover, asset) }
+      it { is_expected.to     be_able_to(:read, asset) }
+      it { is_expected.not_to be_able_to(:download, asset) }
     end
   end
 
@@ -200,39 +213,44 @@ describe Ability do
 
     context 'Then a not-signed-in user' do
       let(:user) { nil }
+
       subject { ability }
 
-      it { should_not be_able_to(:discover, asset) }
-      it { should_not be_able_to(:read, asset) }
-      it { should_not be_able_to(:download, asset) }
+      it { is_expected.not_to be_able_to(:discover, asset) }
+      it { is_expected.not_to be_able_to(:read, asset) }
+      it { is_expected.not_to be_able_to(:download, asset) }
     end
 
     context 'Then a different registered user' do
       let(:user) { create(:user) }
+
       subject { ability }
 
-      it { should_not be_able_to(:discover, asset) }
-      it { should_not be_able_to(:read, asset) }
-      it { should_not be_able_to(:download, asset) }
+      it { is_expected.not_to be_able_to(:discover, asset) }
+      it { is_expected.not_to be_able_to(:read, asset) }
+      it { is_expected.not_to be_able_to(:download, asset) }
     end
 
     context 'Then that user' do
       let(:user) { user_with_access }
+
       subject { ability }
 
-      it { should be_able_to(:discover, asset) }
-      it { should be_able_to(:read, asset) }
-      it { should be_able_to(:download, asset) }
+      it { is_expected.to be_able_to(:discover, asset) }
+      it { is_expected.to be_able_to(:read, asset) }
+      it { is_expected.to be_able_to(:download, asset) }
     end
   end
 
   describe '.user_class' do
     subject { Blacklight::AccessControls::Ability.user_class }
+
     it { is_expected.to eq User }
   end
 
   describe '#guest_user' do
     let(:user) { nil }
+
     subject { ability.guest_user }
 
     it 'is a new user' do
@@ -246,22 +264,26 @@ describe Ability do
 
     context 'an unregistered user' do
       let(:user) { build(:user) }
+
       it { is_expected.to contain_exactly('public') }
     end
 
     context 'a registered user' do
       let(:user) { create(:user) }
+
       it { is_expected.to contain_exactly('registered', 'public') }
     end
 
     context 'a user with groups' do
       let(:user) { double(groups: %w(group1 group2), new_record?: false) }
+
       it { is_expected.to include('group1', 'group2') }
     end
   end
 
   describe 'with a custom method' do
     let(:user) { create(:user) }
+
     subject { MyAbility.new(user) }
 
     before do
@@ -280,6 +302,6 @@ describe Ability do
     end
 
     # Make sure it called the custom method
-    it { should be_able_to(:accept, SolrDocument) }
+    it { is_expected.to be_able_to(:accept, SolrDocument) }
   end
 end
