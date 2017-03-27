@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'cancan'
 
 module Blacklight
@@ -14,7 +15,7 @@ module Blacklight
         # permission methods to ability_logic, like so:
         # self.ability_logic += [:setup_my_permissions]
         class_attribute :ability_logic
-        self.ability_logic = [:discover_permissions, :read_permissions, :download_permissions]
+        self.ability_logic = %i(discover_permissions read_permissions download_permissions)
       end
 
       def initialize(user, options = {})

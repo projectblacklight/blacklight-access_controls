@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 Blacklight::AccessControls.configure do |config|
   # This specifies the solr field names of permissions-related fields.
   # The default fields used are shown below, if you index your permissions to other fields update the configuration below.

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class MyController # < ApplicationController
   include Blacklight::AccessControls::Enforcement
 end
@@ -11,6 +12,7 @@ describe Blacklight::AccessControls::Enforcement do
   end
   let(:user) { User.new }
   let(:ability) { Ability.new(user) }
+
   subject { controller }
 
   describe '#discovery_permissions' do
@@ -33,10 +35,10 @@ describe Blacklight::AccessControls::Enforcement do
       solr_parameters[:fq].first
     end
 
-    # rubocop:disable RSpec/MessageExpectation
     describe 'logger' do
       # Expectation will be triggered by Ability class (that calls Rails.logger.debug earlier). So we double Ability to avoid false positive.
       let(:ability) { instance_double(Ability, user_groups: [], current_user: user) }
+
       it 'is called with debug' do
         expect(Rails.logger).to receive(:debug).with(/^Solr parameters/)
         controller.send(:apply_gated_discovery, {})
@@ -114,6 +116,7 @@ describe Blacklight::AccessControls::Enforcement do
 
     describe 'when the user is a guest user (user key empty string)' do
       let(:user) { User.new(email: '') }
+
       it 'does not create filters' do
         expect(subject.send(:apply_user_permissions, %w(discover read))).to eq []
       end

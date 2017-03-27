@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class Blacklight::AccessControls::PermissionsCache
   def initialize
     clear

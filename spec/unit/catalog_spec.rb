@@ -1,9 +1,11 @@
 # frozen_string_literal: true
+
 describe Blacklight::AccessControls::Catalog do
   let(:controller) { CatalogController.new }
 
   describe '#enforce_show_permissions' do
     subject { controller.send(:enforce_show_permissions) }
+
     let(:params) { { id: doc.id } }
 
     before do

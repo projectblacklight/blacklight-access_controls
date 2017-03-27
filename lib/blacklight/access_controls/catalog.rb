@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Blacklight
   module AccessControls
     # This is behavior for the catalog controller.

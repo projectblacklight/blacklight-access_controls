@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Injects behaviors into User model so that it will work with
 # Blacklight Access Controls.  By default, this module assumes
 # you are using the User model created by Blacklight, which uses
