@@ -22,7 +22,7 @@ module Blacklight
         class_attribute :solr_access_filters_logic
         alias_method :add_access_controls_to_solr_params, :apply_gated_discovery
 
-        self.solr_access_filters_logic = %i(apply_group_permissions apply_user_permissions)
+        self.solr_access_filters_logic = %i[apply_group_permissions apply_user_permissions]
 
         # Apply appropriate access controls to all solr queries
         self.default_processor_chain += [:add_access_controls_to_solr_params] if respond_to?(:default_processor_chain)
@@ -33,7 +33,7 @@ module Blacklight
       # Which permission levels (logical OR) will grant you the ability to discover documents in a search.
       # Override this method if you want it to be something other than the default, or hit the setter
       def discovery_permissions
-        @discovery_permissions ||= %w(discover read)
+        @discovery_permissions ||= %w[discover read]
       end
 
       protected

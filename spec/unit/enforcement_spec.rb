@@ -17,14 +17,14 @@ describe Blacklight::AccessControls::Enforcement do
 
   describe '#discovery_permissions' do
     it 'has defaults' do
-      expect(subject.discovery_permissions).to eq %w(discover read)
+      expect(subject.discovery_permissions).to eq %w[discover read]
     end
 
     it 'does getter/setter' do
-      subject.discovery_permissions = %w(discover read frobnicate)
-      expect(subject.discovery_permissions).to eq %w(discover read frobnicate)
+      subject.discovery_permissions = %w[discover read frobnicate]
+      expect(subject.discovery_permissions).to eq %w[discover read frobnicate]
       subject.discovery_permissions << 'zazzo'
-      expect(subject.discovery_permissions).to eq %w(discover read frobnicate zazzo)
+      expect(subject.discovery_permissions).to eq %w[discover read frobnicate zazzo]
     end
   end
 
@@ -56,7 +56,7 @@ describe Blacklight::AccessControls::Enforcement do
     end
 
     context 'Given I am a registered user' do
-      let(:groups) { %w(faculty africana-faculty) }
+      let(:groups) { %w[faculty africana-faculty] }
       let(:user) do
         create(:user).tap do |u|
           allow(u).to receive(:groups) { groups }
@@ -110,7 +110,7 @@ describe Blacklight::AccessControls::Enforcement do
   describe '#apply_user_permissions' do
     describe 'when the user is a guest user (user key nil)' do
       it 'does not create filters' do
-        expect(subject.send(:apply_user_permissions, %w(discover read))).to eq []
+        expect(subject.send(:apply_user_permissions, %w[discover read])).to eq []
       end
     end
 
@@ -118,7 +118,7 @@ describe Blacklight::AccessControls::Enforcement do
       let(:user) { User.new(email: '') }
 
       it 'does not create filters' do
-        expect(subject.send(:apply_user_permissions, %w(discover read))).to eq []
+        expect(subject.send(:apply_user_permissions, %w[discover read])).to eq []
       end
     end
   end

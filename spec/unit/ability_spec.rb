@@ -275,7 +275,7 @@ describe Ability do
     end
 
     context 'a user with groups' do
-      let(:user) { double(groups: %w(group1 group2), new_record?: false) }
+      let(:user) { double(groups: %w[group1 group2], new_record?: false) }
 
       it { is_expected.to include('group1', 'group2') }
     end
