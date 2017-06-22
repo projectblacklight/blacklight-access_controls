@@ -26,15 +26,6 @@ module Blacklight
         after: "include Blacklight::User\n"
     end
 
-    def add_access_controls_to_search_builder
-      say_status('status', 'ADDING ACCESS CONTROLS TO SEARCH BUILDERS', :yellow)
-      options[:search_builders].each do |file_path|
-        insert_into_file file_path,
-          "  include Blacklight::AccessControls::Enforcement\n\n",
-          after: "include Blacklight::Solr::SearchBuilderBehavior\n"
-      end
-    end
-
     def add_access_controls_to_catalog_controller
       say_status('status', 'ADDING ACCESS CONTROLS TO CATALOG CONTROLLER', :yellow)
 

@@ -66,9 +66,7 @@ RSpec/NamedSubject:
 # Configuration parameters: MaxNesting.
 RSpec/NestedGroups:
   Exclude:
-    - 'spec/unit/ability_spec.rb'
-    - 'spec/unit/catalog_spec.rb'
-    - 'spec/unit/enforcement_spec.rb'
+    - 'spec/**/*_spec.rb'
 
 # Offense count: 2
 # Configuration parameters: EnforcedStyle, SupportedStyles.
