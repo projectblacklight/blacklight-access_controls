@@ -2,47 +2,46 @@
 
 module Blacklight
   module AccessControls
-    # Attributes and methods used to restrict access via Solr.
+    # SearchBuilder that restricts access via Solr.
     #
     # Note: solr_access_filters_logic is an Array of Symbols.
     # It sets defaults. Each symbol identifies a _method_ that must be in
     # this class, taking two parameters (permission_types, ability).
     # Can be changed in local apps or by plugins, e.g.:
-    #   CatalogController.include ModuleDefiningNewMethod
-    #   CatalogController.solr_access_filters_logic += [:new_method]
-    #   CatalogController.solr_access_filters_logic.delete(:we_dont_want)
-    module Enforcement
-      extend ActiveSupport::Concern
+    #   Blacklight::AccessControls::SearchBuilder.solr_access_filters_logic += [:new_method]
+    #   Blacklight::AccessControls::SearchBuilder.solr_access_filters_logic.delete(:we_dont_want)
+    class SearchBuilder < ::SearchBuilder
+      class_attribute :solr_access_filters_logic
+      self.solr_access_filters_logic = %i[apply_group_permissions apply_user_permissions]
 
-      included do
-        extend Deprecation
-        attr_writer :current_ability, :discovery_permissions
-        deprecation_deprecate :current_ability=
+      # Apply appropriate access controls to all solr queries
+      self.default_processor_chain += [:apply_gated_discovery]
 
-        Deprecation.warn(self, 'Blacklight::AccessControls::Enforcement is deprecated and will be removed in 1.0')
-        class_attribute :solr_access_filters_logic
-        alias_method :add_access_controls_to_solr_params, :apply_gated_discovery
-
-        self.solr_access_filters_logic = %i[apply_group_permissions apply_user_permissions]
-
-        # Apply appropriate access controls to all solr queries
-        self.default_processor_chain += [:add_access_controls_to_solr_params] if respond_to?(:default_processor_chain)
+      # @param scope [Object] typically the controller instance
+      # @param ability [Ability] the current user ability
+      # @param permission_types [Array<String>] Which permission levels (logical OR) will grant you the ability to discover documents in a search.
+      def initialize(scope, ability:, permission_types: default_permission_types)
+        if self.class.included_modules.include? Blacklight::AccessControls::Enforcement
+          raise 'You may not use Blacklight::AccessControls::SearchBuilder and ' \
+                'include Blacklight::AccessControls::Enforcement on SearchBuilder at the same time'
+        end
+        super(scope)
+        @ability = ability
+        @permission_types = permission_types
       end
 
-      delegate :current_ability, to: :scope
+      attr_reader :ability, :permission_types
 
-      # Which permission levels (logical OR) will grant you the ability to discover documents in a search.
-      # Override this method if you want it to be something other than the default, or hit the setter
-      def discovery_permissions
-        @discovery_permissions ||= %w[discover read]
+      def default_permission_types
+        %w[discover read]
       end
 
-      protected
+      private
 
       # Grant access based on user id & group
       # @return [Array{Array{String}}]
-      def gated_discovery_filters(permission_types = discovery_permissions, ability = current_ability)
-        solr_access_filters_logic.map { |method| send(method, permission_types, ability).reject(&:blank?) }.reject(&:empty?)
+      def gated_discovery_filters
+        solr_access_filters_logic.map { |method| send(method).reject(&:blank?) }.reject(&:empty?)
       end
 
       ### Solr query modifications
@@ -62,7 +61,7 @@ module Blacklight
       # @example
       #   [ "({!terms f=discover_access_group_ssim}public,faculty,africana-faculty,registered)",
       #     "({!terms f=read_access_group_ssim}public,faculty,africana-faculty,registered)" ]
-      def apply_group_permissions(permission_types, ability = current_ability)
+      def apply_group_permissions
         groups = ability.user_groups
         return [] if groups.empty?
         permission_types.map do |type|
@@ -74,7 +73,7 @@ module Blacklight
       # For individual user access
       # @return [Array{String}] values are lucence syntax term queries suitable for :fq
       # @example ['discover_access_person_ssim:user_1@abc.com', 'read_access_person_ssim:user_1@abc.com']
-      def apply_user_permissions(permission_types, ability = current_ability)
+      def apply_user_permissions
         user = ability.current_user
         return [] unless user && user.user_key.present?
         permission_types.map do |type|

@@ -10,6 +10,7 @@ module Blacklight
     autoload :PermissionsCache
     autoload :Ability
     autoload :Enforcement
+    autoload :SearchBuilder
     autoload :Catalog
   end
 end
