@@ -55,6 +55,7 @@ module Blacklight
       end
 
       def read_permissions
+        # Loading an object from your datastore might be slow (e.g. Fedora), so assume that if a string is passed, it's an object id
         can :read, String do |id|
           test_read(id)
         end
