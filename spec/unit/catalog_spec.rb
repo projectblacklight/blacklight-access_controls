@@ -27,7 +27,7 @@ describe Blacklight::AccessControls::Catalog do
       let(:user) { build(:user) }
 
       it 'allows access' do
-        expect { subject }.to_not raise_error
+        expect { subject }.not_to raise_error
       end
 
       # So that you can override enforce_show_permissions
