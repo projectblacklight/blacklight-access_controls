@@ -3,27 +3,29 @@
 require 'cancan/matchers'
 
 describe Ability do
-  let(:ability) { Ability.new(user) }
+  let(:ability) { described_class.new(user) }
 
   describe 'class methods' do
     it 'has keys for access control fields' do
-      expect(Ability.read_group_field).to eq 'read_access_group_ssim'
-      expect(Ability.read_user_field).to eq 'read_access_person_ssim'
-      expect(Ability.discover_group_field).to eq 'discover_access_group_ssim'
-      expect(Ability.discover_user_field).to eq 'discover_access_person_ssim'
-      expect(Ability.download_group_field).to eq 'download_access_group_ssim'
-      expect(Ability.download_user_field).to eq 'download_access_person_ssim'
+      expect(described_class.read_group_field).to eq 'read_access_group_ssim'
+      expect(described_class.read_user_field).to eq 'read_access_person_ssim'
+      expect(described_class.discover_group_field).to eq 'discover_access_group_ssim'
+      expect(described_class.discover_user_field).to eq 'discover_access_person_ssim'
+      expect(described_class.download_group_field).to eq 'download_access_group_ssim'
+      expect(described_class.download_user_field).to eq 'download_access_person_ssim'
     end
   end
 
   describe 'Given an asset that has been made publicly discoverable' do
-    let(:asset) { SolrDocument.new(id: 'public_discovery',
-                                   discover_access_group_ssim: ['public']) }
+    let(:asset) do
+      SolrDocument.new(id: 'public_discovery',
+                       discover_access_group_ssim: ['public'])
+    end
 
     context 'Then a not-signed-in user' do
-      let(:user) { nil }
-
       subject { ability }
+
+      let(:user) { nil }
 
       it { is_expected.to     be_able_to(:discover, asset) }
       it { is_expected.not_to be_able_to(:read, asset) }
@@ -31,9 +33,9 @@ describe Ability do
     end
 
     context 'Then a registered user' do
-      let(:user) { create(:user) }
-
       subject { ability }
+
+      let(:user) { create(:user) }
 
       it { is_expected.to     be_able_to(:discover, asset) }
       it { is_expected.not_to be_able_to(:read, asset) }
@@ -44,10 +46,10 @@ describe Ability do
       subject { ability }
 
       let(:user) { create(:user) }
-      let(:asset) {
+      let(:asset) do
         create_solr_doc(id: 'public_discovery',
                         discover_access_group_ssim: ['public'])
-      }
+      end
 
       # It should still work, even if we just pass in an ID
       it { is_expected.to     be_able_to(:discover, asset.id) }
@@ -57,13 +59,15 @@ describe Ability do
   end
 
   describe 'Given an asset that has been made publicly readable' do
-    let(:asset) { SolrDocument.new(id: 'public_read',
-                                   read_access_group_ssim: ['public']) }
+    let(:asset) do
+      SolrDocument.new(id: 'public_read',
+                       read_access_group_ssim: ['public'])
+    end
 
     context 'Then a not-signed-in user' do
-      let(:user) { nil }
-
       subject { ability }
+
+      let(:user) { nil }
 
       it { is_expected.to     be_able_to(:discover, asset) }
       it { is_expected.to     be_able_to(:read, asset) }
@@ -71,9 +75,9 @@ describe Ability do
     end
 
     context 'Then a registered user' do
-      let(:user) { create(:user) }
-
       subject { ability }
+
+      let(:user) { create(:user) }
 
       it { is_expected.to     be_able_to(:discover, asset) }
       it { is_expected.to     be_able_to(:read, asset) }
@@ -84,10 +88,10 @@ describe Ability do
       subject { ability }
 
       let(:user) { create(:user) }
-      let(:asset) {
+      let(:asset) do
         create_solr_doc(id: 'public_read',
                         read_access_group_ssim: ['public'])
-      }
+      end
 
       # It should still work, even if we just pass in an ID
       it { is_expected.to     be_able_to(:discover, asset.id) }
@@ -98,13 +102,15 @@ describe Ability do
 
   describe 'Given an asset that has been made publicly downloadable' do
     let(:id) { 'public_download' }
-    let(:asset) { SolrDocument.new(id: id,
-                                   download_access_group_ssim: ['public']) }
+    let(:asset) do
+      SolrDocument.new(id: id,
+                       download_access_group_ssim: ['public'])
+    end
 
     context 'Then a not-signed-in user' do
-      let(:user) { nil }
-
       subject { ability }
+
+      let(:user) { nil }
 
       it { is_expected.to be_able_to(:discover, asset) }
       it { is_expected.to be_able_to(:read, asset) }
@@ -125,10 +131,10 @@ describe Ability do
       subject { ability }
 
       let(:user) { create(:user) }
-      let(:asset) {
+      let(:asset) do
         create_solr_doc(id: id,
                         download_access_group_ssim: ['public'])
-      }
+      end
 
       # It should still work, even if we just pass in an ID
       it { is_expected.to be_able_to(:discover, asset.id) }
@@ -142,9 +148,9 @@ describe Ability do
     let(:asset) { SolrDocument.new(id: 'user_disco', discover_access_person_ssim: [user_with_access.email]) }
 
     context 'Then a not-signed-in user' do
-      let(:user) { nil }
-
       subject { ability }
+
+      let(:user) { nil }
 
       it { is_expected.not_to be_able_to(:discover, asset) }
       it { is_expected.not_to be_able_to(:read, asset) }
@@ -152,9 +158,9 @@ describe Ability do
     end
 
     context 'Then a different registered user' do
-      let(:user) { create(:user) }
-
       subject { ability }
+
+      let(:user) { create(:user) }
 
       it { is_expected.not_to be_able_to(:discover, asset) }
       it { is_expected.not_to be_able_to(:read, asset) }
@@ -162,9 +168,9 @@ describe Ability do
     end
 
     context 'Then that user' do
-      let(:user) { user_with_access }
-
       subject { ability }
+
+      let(:user) { user_with_access }
 
       it { is_expected.to     be_able_to(:discover, asset) }
       it { is_expected.not_to be_able_to(:read, asset) }
@@ -177,9 +183,9 @@ describe Ability do
     let(:asset) { SolrDocument.new(id: 'user_read', read_access_person_ssim: [user_with_access.email]) }
 
     context 'Then a not-signed-in user' do
-      let(:user) { nil }
-
       subject { ability }
+
+      let(:user) { nil }
 
       it { is_expected.not_to be_able_to(:discover, asset) }
       it { is_expected.not_to be_able_to(:read, asset) }
@@ -187,9 +193,9 @@ describe Ability do
     end
 
     context 'Then a different registered user' do
-      let(:user) { create(:user) }
-
       subject { ability }
+
+      let(:user) { create(:user) }
 
       it { is_expected.not_to be_able_to(:discover, asset) }
       it { is_expected.not_to be_able_to(:read, asset) }
@@ -197,9 +203,9 @@ describe Ability do
     end
 
     context 'Then that user' do
-      let(:user) { user_with_access }
-
       subject { ability }
+
+      let(:user) { user_with_access }
 
       it { is_expected.to     be_able_to(:discover, asset) }
       it { is_expected.to     be_able_to(:read, asset) }
@@ -212,9 +218,9 @@ describe Ability do
     let(:asset) { SolrDocument.new(id: 'user_read', download_access_person_ssim: [user_with_access.email]) }
 
     context 'Then a not-signed-in user' do
-      let(:user) { nil }
-
       subject { ability }
+
+      let(:user) { nil }
 
       it { is_expected.not_to be_able_to(:discover, asset) }
       it { is_expected.not_to be_able_to(:read, asset) }
@@ -222,9 +228,9 @@ describe Ability do
     end
 
     context 'Then a different registered user' do
-      let(:user) { create(:user) }
-
       subject { ability }
+
+      let(:user) { create(:user) }
 
       it { is_expected.not_to be_able_to(:discover, asset) }
       it { is_expected.not_to be_able_to(:read, asset) }
@@ -232,9 +238,9 @@ describe Ability do
     end
 
     context 'Then that user' do
-      let(:user) { user_with_access }
-
       subject { ability }
+
+      let(:user) { user_with_access }
 
       it { is_expected.to be_able_to(:discover, asset) }
       it { is_expected.to be_able_to(:read, asset) }
@@ -249,9 +255,9 @@ describe Ability do
   end
 
   describe '#guest_user' do
-    let(:user) { nil }
-
     subject { ability.guest_user }
+
+    let(:user) { nil }
 
     it 'is a new user' do
       expect(subject).to be_a User
@@ -282,9 +288,9 @@ describe Ability do
   end
 
   describe 'with a custom method' do
-    let(:user) { create(:user) }
-
     subject { MyAbility.new(user) }
+
+    let(:user) { create(:user) }
 
     before do
       class MyAbility

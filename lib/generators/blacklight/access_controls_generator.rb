@@ -22,8 +22,8 @@ module Blacklight
     def add_access_controls_to_user
       say_status('status', 'ADDING ACCESS CONTROLS TO USER MODEL', :yellow)
       insert_into_file File.join('app', 'models', "#{options[:user_model].underscore}.rb"),
-        "  include Blacklight::AccessControls::User\n\n",
-        after: "include Blacklight::User\n"
+                       "  include Blacklight::AccessControls::User\n\n",
+                       after: "include Blacklight::User\n"
     end
 
     def add_access_controls_to_catalog_controller
@@ -38,7 +38,7 @@ module Blacklight
       EOS
 
       insert_into_file 'app/controllers/catalog_controller.rb',
-        string_to_insert, after: "include Blacklight::Catalog\n"
+                       string_to_insert, after: "include Blacklight::Catalog\n"
     end
 
     def add_cancan_ability

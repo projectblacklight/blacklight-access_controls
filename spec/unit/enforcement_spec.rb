@@ -5,6 +5,8 @@ class MyController # < ApplicationController
 end
 
 describe Blacklight::AccessControls::Enforcement do
+  subject { controller }
+
   let(:controller) do
     c = MyController.new
     allow(c).to receive(:current_ability).and_return(ability)
@@ -12,8 +14,6 @@ describe Blacklight::AccessControls::Enforcement do
   end
   let(:user) { User.new }
   let(:ability) { Ability.new(user) }
-
-  subject { controller }
 
   describe '#discovery_permissions' do
     it 'has defaults' do
@@ -51,7 +51,7 @@ describe Blacklight::AccessControls::Enforcement do
       end
 
       it "Then I should not be treated as a member of the 'registered' group" do
-        expect(fq_first).to_not match(/registered/)
+        expect(fq_first).not_to match(/registered/)
       end
     end
 
@@ -69,8 +69,8 @@ describe Blacklight::AccessControls::Enforcement do
       end
 
       it 'searches for my groups' do
-        expect(fq_first).to match(%r{\{!terms f=discover_access_group_ssim\}public,faculty,africana-faculty,registered})
-        expect(fq_first).to match(%r{\{!terms f=read_access_group_ssim\}public,faculty,africana-faculty,registered})
+        expect(fq_first).to match(/\{!terms f=discover_access_group_ssim\}public,faculty,africana-faculty,registered/)
+        expect(fq_first).to match(/\{!terms f=read_access_group_ssim\}public,faculty,africana-faculty,registered/)
       end
 
       it 'does not build empty clauses' do
@@ -100,8 +100,8 @@ describe Blacklight::AccessControls::Enforcement do
         let(:groups) { ['abc:123', 'cde:567'] }
 
         it 'does not escape colons' do
-          expect(fq_first).to match(%r{\{!terms f=discover_access_group_ssim\}public,abc:123,cde:567,registered})
-          expect(fq_first).to match(%r{\{!terms f=read_access_group_ssim\}public,abc:123,cde:567,registered})
+          expect(fq_first).to match(/\{!terms f=discover_access_group_ssim\}public,abc:123,cde:567,registered/)
+          expect(fq_first).to match(/\{!terms f=read_access_group_ssim\}public,abc:123,cde:567,registered/)
         end
       end
     end
