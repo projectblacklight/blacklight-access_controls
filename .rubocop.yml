@@ -19,7 +19,7 @@ Metrics/BlockLength:
 Metrics/LineLength:
   Max: 185
 
-Style/FileName:
+Naming/FileName:
   Exclude:
     - 'Gemfile'
     - 'blacklight-access_controls.gemspec'
