@@ -15,6 +15,12 @@ Metrics/AbcSize:
 Metrics/ModuleLength:
   Max: 120
 
+RSpec/ContextWording:
+  Exclude:
+    - 'spec/unit/ability_spec.rb'
+    - 'spec/unit/enforcement_spec.rb'
+    - 'spec/unit/blacklight/access_controls/search_builder_spec.rb'
+
 # Offense count: 1
 # Configuration parameters: Max.
 RSpec/ExampleLength:

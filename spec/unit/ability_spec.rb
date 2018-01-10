@@ -261,7 +261,7 @@ describe Ability do
 
     it 'is a new user' do
       expect(subject).to be_a User
-      expect(subject.new_record?).to be_truthy
+      expect(subject).to be_new_record
     end
   end
 
