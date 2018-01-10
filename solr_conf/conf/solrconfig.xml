@@ -102,7 +102,6 @@
        -->
         <str name="qf">
           id
-          active_fedora_model_ssi
           title_tesim
           author_tesim
           subject_tesim
@@ -160,7 +159,6 @@
         discover_access_group_ssim,discover_access_person_ssim,
         read_access_group_ssim,read_access_person_ssim,
         edit_access_group_ssim,edit_access_person_ssim,
-        download_access_group_ssim,download_access_person_ssim,
         depositor_ti,
         embargo_release_date_dtsi
         inheritable_access_ssim,
@@ -187,6 +185,17 @@
       <str name="rows">1</str>
       <str name="q">{!term f=id v=$id}</str> <!-- use id=666 instead of q=id:666 -->
     </lst>
+  </requestHandler>
+
+  <searchComponent name="termsComponent" class="solr.TermsComponent" />
+
+  <requestHandler name="/terms" class="solr.SearchHandler">
+    <lst name="defaults">
+      <bool name="terms">true</bool>
+    </lst>
+    <arr name="components">
+      <str>termsComponent</str>
+    </arr>
   </requestHandler>
 
 <!-- Spell Check

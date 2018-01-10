@@ -28,7 +28,7 @@
     <xsl:output
         method="html"
         encoding="UTF-8"
-        media-type="text/html"
+        media-type="text/html; charset=UTF-8"
         doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
         doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
     />
@@ -39,8 +39,8 @@
         <html xmlns="http://www.w3.org/1999/xhtml">
             <head>
                 <link rel="stylesheet" type="text/css" href="solr-admin.css"/>
-                <link rel="icon" href="favicon.ico" type="image/x-icon"/>
-                <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+                <link rel="icon" href="favicon.ico" type="image/ico"/>
+                <link rel="shortcut icon" href="favicon.ico" type="image/ico"/>
                 <title>
                     <xsl:value-of select="$title"/>
                 </title>
