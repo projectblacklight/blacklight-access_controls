@@ -27,6 +27,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'solr_wrapper'
   gem.add_development_dependency 'factory_girl_rails', '~> 4.0'
   gem.add_development_dependency 'database_cleaner'
-  gem.add_development_dependency 'rubocop'
-  gem.add_development_dependency 'rubocop-rspec'
+  gem.add_development_dependency 'rubocop', '~> 0.49.0'
+  gem.add_development_dependency 'rubocop-rspec', '~> 1.14.0'
 end
