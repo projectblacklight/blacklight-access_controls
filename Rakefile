@@ -17,7 +17,7 @@ RSpec::Core::RakeTask.new(:spec)
 task default: 'ci'
 
 def solr_config_dir
-  File.join(File.expand_path(File.dirname(__FILE__)), 'solr_conf', 'conf')
+  File.join(__dir__, 'solr_conf', 'conf')
 end
 
 namespace :solr do
