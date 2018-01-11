@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MyController # < ApplicationController
+class MyController
   include Blacklight::AccessControls::Enforcement
 end
 
