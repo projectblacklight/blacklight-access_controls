@@ -7,13 +7,13 @@ EngineCart.load_application!
 
 require 'blacklight-access_controls'
 
-require 'factory_girl_rails'
+require 'factory_bot_rails'
 require 'database_cleaner'
 
 Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
 
 RSpec.configure do |config|
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
 
   config.include SolrSupport
 
