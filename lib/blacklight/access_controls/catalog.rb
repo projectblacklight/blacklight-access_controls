@@ -18,7 +18,7 @@ module Blacklight
 
       # This will work for BL 6, but will need to move to SearchService in BL 7
       def search_builder
-        Blacklight::AccessControls::SearchBuilder.new(self, current_ability)
+        Blacklight::AccessControls::SearchBuilder.new(self, ability: current_ability)
       end
     end
   end
