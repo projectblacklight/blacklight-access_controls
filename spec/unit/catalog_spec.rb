@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-describe Blacklight::AccessControls::Catalog do
+RSpec.describe Blacklight::AccessControls::Catalog do
   let(:controller) { CatalogController.new }
 
   describe '#enforce_show_permissions' do
-    subject { controller.send(:enforce_show_permissions) }
+    subject { controller.enforce_show_permissions }
 
     let(:params) { { id: doc.id } }
 
@@ -36,6 +36,18 @@ describe Blacklight::AccessControls::Catalog do
       it 'returns the permissions doc' do
         expect(subject).to be_a(SolrDocument)
       end
+    end
+  end
+
+  describe '#search_builder' do
+    subject { controller.search_builder }
+
+    before do
+      allow(controller).to receive(:current_ability).and_return(instance_double(Ability))
+    end
+
+    it 'creates a search_builder' do
+      expect(subject).to be_kind_of Blacklight::AccessControls::SearchBuilder
     end
   end
 end
