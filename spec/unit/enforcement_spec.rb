@@ -40,8 +40,9 @@ describe Blacklight::AccessControls::Enforcement do
       let(:ability) { instance_double(Ability, user_groups: [], current_user: user) }
 
       it 'is called with debug' do
-        expect(Rails.logger).to receive(:debug).with(/^Solr parameters/)
+        allow(Rails.logger).to receive(:debug)
         controller.send(:apply_gated_discovery, {})
+        expect(Rails.logger).to have_received(:debug).with(/^Solr parameters/)
       end
     end
 
