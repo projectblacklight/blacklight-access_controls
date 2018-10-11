@@ -8,8 +8,9 @@ rvm:
   - 2.5.1
 
 env:
- - "RAILS_VERSION=5.2.0"
- - "RAILS_VERSION=5.1.0"
+ - "BLACKLIGHT_VERSION=master RAILS_VERSION=5.2.1"
+ - "RAILS_VERSION=5.2.1"
+ - "RAILS_VERSION=5.1.6"
 
 global_env:
   - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
