@@ -13,11 +13,16 @@ module Blacklight::AccessControls
       doc
     end
 
+    # This is only valid for, and should only be used for blacklight 6
     def permissions_document_class
-      SolrDocument
+      blacklight_config.document_model
     end
 
     protected
+
+    def blacklight_config
+      CatalogController.blacklight_config
+    end
 
     # a solr query method
     # retrieve a solr document, given the doc id
@@ -28,7 +33,11 @@ module Blacklight::AccessControls
       raise Blacklight::Exceptions::RecordNotFound, 'The application is trying to retrieve permissions without specifying an asset id' if id.nil?
       solr_opts = permissions_solr_doc_params(id).merge(extra_controller_params)
       response = Blacklight.default_index.connection.get('select', params: solr_opts)
-      solr_response = Blacklight::Solr::Response.new(response, solr_opts, document_model: permissions_document_class)
+
+      # Passing :blacklight_config is required for Blacklight 7, :document_model is required for Blacklight 6
+      solr_response = Blacklight::Solr::Response.new(response, solr_opts,
+                                                     blacklight_config: blacklight_config,
+                                                     document_model: permissions_document_class)
 
       raise Blacklight::Exceptions::RecordNotFound, "The solr permissions search handler didn't return anything for id \"#{id}\"" if solr_response.docs.empty?
       solr_response.docs.first

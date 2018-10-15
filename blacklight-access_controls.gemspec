@@ -17,7 +17,7 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version = '>= 2.1.0'
 
-  gem.add_dependency 'blacklight', '~> 6.0'
+  gem.add_dependency 'blacklight', '> 6.0', '< 8'
   gem.add_dependency 'cancancan', '~> 1.8'
   gem.add_dependency 'deprecation', '~> 1.0'
 
