@@ -1,3 +1,0 @@
-if ENV['BLACKLIGHT_VERSION'] == 'master'
-  gem 'blacklight', github: 'projectblacklight/blacklight'
-end

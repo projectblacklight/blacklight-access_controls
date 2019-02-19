@@ -1,5 +1,13 @@
 version = File.read(File.expand_path('../VERSION', __FILE__)).strip
 
+module Blacklight
+  module AccessControls
+    def self.bl_version
+      ENV['BLACKLIGHT_VERSION'] ? [ENV['BLACKLIGHT_VERSION']] : ['> 6.0', '< 8']
+    end
+  end
+end
+
 Gem::Specification.new do |gem|
   gem.name          = 'blacklight-access_controls'
 
@@ -17,7 +25,7 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version = '>= 2.1.0'
 
-  gem.add_dependency 'blacklight', '> 6.0', '< 8'
+  gem.add_dependency 'blacklight', *Blacklight::AccessControls.bl_version
   gem.add_dependency 'cancancan', '~> 1.8'
   gem.add_dependency 'deprecation', '~> 1.0'
 
