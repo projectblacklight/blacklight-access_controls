@@ -22,7 +22,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'deprecation', '~> 1.0'
 
   gem.add_development_dependency 'database_cleaner'
-  gem.add_development_dependency 'engine_cart', '~> 1.0'
+  gem.add_development_dependency 'engine_cart', '~> 2.2'
   gem.add_development_dependency 'factory_bot_rails', '~> 4.8'
   gem.add_development_dependency 'rake', '~> 12.3'
   gem.add_development_dependency 'rspec', '~> 3.1'
