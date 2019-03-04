@@ -26,7 +26,7 @@ Gem::Specification.new do |gem|
   gem.required_ruby_version = '>= 2.1.0'
 
   gem.add_dependency 'blacklight', *Blacklight::AccessControls.bl_version
-  gem.add_dependency 'cancancan', '~> 1.8'
+  gem.add_dependency 'cancancan', '>= 1.8', '< 3'
   gem.add_dependency 'deprecation', '~> 1.0'
 
   gem.add_development_dependency 'database_cleaner'
