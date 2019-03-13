@@ -89,10 +89,8 @@ This section contains information about working on the blacklight-access_control
 h3. Set up Solr
 
 <pre>
-$ bundle exec rake solr:clean
-$ bundle exec rake solr:config
-$ bundle exec rake solr:start
-$ bundle exec rake solr:stop
+$ bundle exec solr_wrapper clean
+$ bundle exec solr_wrapper
 </pre>
 
 h3. Generate a Rails test app
@@ -113,7 +111,7 @@ $ bundle exec rake solr:spec
 h3. Run the Rails server in development mode
 
 <pre>
-$ bundle exec rake solr:start
+$ bundle exec solr_wrapper
 $ bundle exec rake engine_cart:generate
 $ bundle exec rake engine_cart:server
 </pre>
