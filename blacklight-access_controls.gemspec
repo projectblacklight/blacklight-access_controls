@@ -34,7 +34,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'factory_bot_rails', '~> 4.8'
   gem.add_development_dependency 'rake', '~> 12.3'
   gem.add_development_dependency 'rspec', '~> 3.1'
-  gem.add_development_dependency 'rubocop', '~> 0.52.1'
+  gem.add_development_dependency 'rubocop', '~> 1.29'
   gem.add_development_dependency 'rubocop-rspec'
   gem.add_development_dependency 'solr_wrapper'
 end

@@ -25,9 +25,6 @@ Naming/FileName:
     - 'blacklight-access_controls.gemspec'
     - 'lib/blacklight-access_controls.rb'
 
-Rails:
-  Enabled: true
-
 RSpec/MessageSpies:
   Enabled: false
 
