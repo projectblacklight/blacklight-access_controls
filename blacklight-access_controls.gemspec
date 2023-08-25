@@ -3,7 +3,7 @@ version = File.read(File.expand_path('../VERSION', __FILE__)).strip
 module Blacklight
   module AccessControls
     def self.bl_version
-      ENV['BLACKLIGHT_VERSION'] ? [ENV['BLACKLIGHT_VERSION']] : ['> 6.0', '< 8']
+      ENV['BLACKLIGHT_VERSION'] ? [ENV['BLACKLIGHT_VERSION']] : ['> 6.0', '<= 8']
     end
   end
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'deprecation'
 
 module Blacklight
   module AccessControls
@@ -15,11 +16,11 @@ module Blacklight
       extend ActiveSupport::Concern
 
       included do
-        extend Deprecation
+        extend ::Deprecation
         attr_writer :current_ability, :discovery_permissions
         deprecation_deprecate :current_ability=
 
-        Deprecation.warn(self, 'Blacklight::AccessControls::Enforcement is deprecated and will be removed in 1.0')
+        ::Deprecation.warn(self, 'Blacklight::AccessControls::Enforcement is deprecated and will be removed in 1.0')
         class_attribute :solr_access_filters_logic
         alias_method :add_access_controls_to_solr_params, :apply_gated_discovery
 
