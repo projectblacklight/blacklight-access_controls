@@ -11,7 +11,7 @@ class TestAppGenerator < Rails::Generators::Base
 
   def generate_blacklight
     say_status('status', 'GENERATING BLACKLIGHT', :yellow)
-    generate 'blacklight:install', '--devise'
+    generate 'blacklight:install', '--devise --skip-assets'
   end
 
   def configure_blacklight
