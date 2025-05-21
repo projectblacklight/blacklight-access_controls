@@ -8,8 +8,6 @@ RSpec.describe Blacklight::AccessControls::SearchBuilder do
   let(:user) { User.new }
   let(:ability) { Ability.new(user) }
 
-  before { allow(controller).to receive(:blacklight_config) }
-
   describe '#discovery_permissions' do
     subject { search_builder.default_permission_types }
 
