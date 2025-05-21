@@ -9,8 +9,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby_version: ['3.3.8', '3.2.8']
-        rails_version: ['7.2.2.1', '7.1.5.1']
+        ruby_version: ['3.4.4', '3.3.8', '3.2.8']
+        rails_version: ['8.0.1', '7.2.2.1', '7.1.5.1']
 
     runs-on: ubuntu-latest
     name: ruby ${{ matrix.ruby_version }} | rails ${{ matrix.rails_version }}
