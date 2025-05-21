@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe Blacklight::AccessControls::SearchBuilder do
-  subject { search_builder }
+  subject(:search_builder) { described_class.new scope, ability: ability }
 
-  let(:search_builder) do
-    described_class.new(controller, ability: ability)
-  end
-  let(:controller) { double }
+  let(:blacklight_config) { Blacklight::Configuration.new }
+  let(:scope) { double blacklight_config: blacklight_config, search_state_class: nil }
   let(:user) { User.new }
   let(:ability) { Ability.new(user) }
 
