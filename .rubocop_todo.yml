@@ -32,7 +32,7 @@ RSpec/ExampleLength:
 
 # Offense count: 3
 # Configuration parameters: CustomTransform, IgnoreMethods.
-RSpec/FilePath:
+RSpec/SpecFilePathFormat:
   Exclude:
     - 'spec/unit/catalog_spec.rb'
     - 'spec/unit/config_spec.rb'
