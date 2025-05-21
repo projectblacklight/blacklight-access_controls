@@ -16,7 +16,7 @@ jobs:
     name: ruby ${{ matrix.ruby_version }} | rails ${{ matrix.rails_version }}
     env:
       RAILS_VERSION: ${{ matrix.rails_version }}
-      ENGINE_CART_RAILS_OPTIONS: "--skip-git --skip-listen --skip-spring --skip-keeps --skip-kamal --skip-solid --skip-coffee --skip-test"
+      ENGINE_CART_RAILS_OPTIONS: "--skip-git --skip-listen --skip-spring --skip-keeps --skip-kamal --skip-solid --skip-coffee --skip-test --skip-assets"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
